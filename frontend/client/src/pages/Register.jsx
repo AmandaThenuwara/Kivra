@@ -1,0 +1,1 @@
+ <Route path="/register" element={<Register />} />
