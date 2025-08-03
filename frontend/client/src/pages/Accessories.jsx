@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Products.css';
 
-const Men = () => {
+const Accessories = () => {
   const [cart, setCart] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [sortBy, setSortBy] = useState('name');
@@ -14,92 +14,14 @@ const Men = () => {
     setTimeout(() => setIsLoading(false), 1000);
   }, []);
 
-  const menProducts = [
-    {
-      id: 1,
-      name: "Classic Oxford Shirt",
-      price: 14900,
-      originalPrice: 19900,
-      image: "https://images.unsplash.com/photo-1564257577386-5d7c5d4e3e4e?w=400&h=500&fit=crop",
-      category: "Shirts",
-      sale: true,
-      new: false,
-      description: "Premium cotton oxford shirt with modern fit",
-      sizes: ["S", "M", "L", "XL"],
-      colors: ["White", "Blue", "Light Blue"]
-    },
-    {
-      id: 2,
-      name: "Premium Wool Suit",
-      price: 89900,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop",
-      category: "Suits",
-      sale: false,
-      new: true,
-      description: "Handcrafted wool suit with Italian tailoring",
-      sizes: ["38", "40", "42", "44", "46"],
-      colors: ["Navy", "Charcoal", "Black"]
-    },
-    {
-      id: 3,
-      name: "Leather Dress Shoes",
-      price: 29900,
-      originalPrice: 39900,
-      image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=500&fit=crop",
-      category: "Shoes",
-      sale: true,
-      new: false,
-      description: "Genuine leather oxford shoes with leather sole",
-      sizes: ["7", "8", "9", "10", "11", "12"],
-      colors: ["Black", "Brown", "Cognac"]
-    },
-    {
-      id: 4,
-      name: "Cashmere Sweater",
-      price: 24900,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?w=400&h=500&fit=crop",
-      category: "Knitwear",
-      sale: false,
-      new: true,
-      description: "100% cashmere crew neck sweater",
-      sizes: ["S", "M", "L", "XL"],
-      colors: ["Navy", "Grey", "Camel"]
-    },
-    {
-      id: 5,
-      name: "Tailored Blazer",
-      price: 39900,
-      originalPrice: 49900,
-      image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&h=500&fit=crop",
-      category: "Blazers",
-      sale: true,
-      new: false,
-      description: "Slim fit blazer with peak lapels",
-      sizes: ["38", "40", "42", "44"],
-      colors: ["Navy", "Black", "Grey"]
-    },
-    {
-      id: 6,
-      name: "Designer Jeans",
-      price: 18900,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=500&fit=crop",
-      category: "Denim",
-      sale: false,
-      new: false,
-      description: "Premium denim with contemporary fit",
-      sizes: ["30", "32", "34", "36", "38"],
-      colors: ["Dark Blue", "Black", "Light Blue"]
-    },
+  const accessoryProducts = [
     {
       id: 7,
       name: "Luxury Watch",
       price: 129900,
       originalPrice: 159900,
       image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=400&h=500&fit=crop",
-      category: "Accessories",
+      category: "Watches",
       sale: true,
       new: false,
       description: "Swiss movement luxury timepiece",
@@ -112,18 +34,148 @@ const Men = () => {
       price: 8900,
       originalPrice: null,
       image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=500&fit=crop",
-      category: "Accessories",
+      category: "Ties",
       sale: false,
       new: true,
       description: "Hand-crafted silk ties with premium patterns",
       sizes: ["One Size"],
       colors: ["Navy", "Burgundy", "Gold"]
+    },
+    {
+      id: 11,
+      name: "Designer Handbag",
+      price: 59900,
+      originalPrice: 79900,
+      image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=500&fit=crop",
+      category: "Bags",
+      sale: true,
+      new: false,
+      description: "Luxury leather handbag with gold hardware",
+      sizes: ["One Size"],
+      colors: ["Black", "Tan", "Red"]
+    },
+    {
+      id: 15,
+      name: "Luxury Scarf",
+      price: 12900,
+      originalPrice: 16900,
+      image: "https://images.unsplash.com/photo-1544441892-794166f1e3be?w=400&h=500&fit=crop",
+      category: "Scarves",
+      sale: true,
+      new: false,
+      description: "Pure silk scarf with hand-rolled edges",
+      sizes: ["One Size"],
+      colors: ["Floral", "Geometric", "Abstract"]
+    },
+    {
+      id: 16,
+      name: "Designer Sunglasses",
+      price: 29900,
+      originalPrice: null,
+      image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400&h=500&fit=crop",
+      category: "Eyewear",
+      sale: false,
+      new: true,
+      description: "Oversized sunglasses with UV protection",
+      sizes: ["One Size"],
+      colors: ["Black", "Tortoise", "Gold"]
+    },
+    {
+      id: 14,
+      name: "Pearl Jewelry Set",
+      price: 39900,
+      originalPrice: null,
+      image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=500&fit=crop",
+      category: "Jewelry",
+      sale: false,
+      new: false,
+      description: "Cultured pearl necklace and earring set",
+      sizes: ["One Size"],
+      colors: ["White", "Cream", "Silver"]
+    },
+    {
+      id: 25,
+      name: "Leather Belt Collection",
+      price: 15900,
+      originalPrice: null,
+      image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=500&fit=crop",
+      category: "Belts",
+      sale: false,
+      new: true,
+      description: "Genuine leather belts with premium buckles",
+      sizes: ["32", "34", "36", "38", "40"],
+      colors: ["Black", "Brown", "Cognac"]
+    },
+    {
+      id: 26,
+      name: "Premium Wallet",
+      price: 18900,
+      originalPrice: 24900,
+      image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=500&fit=crop",
+      category: "Wallets",
+      sale: true,
+      new: false,
+      description: "Handcrafted leather wallet with RFID protection",
+      sizes: ["One Size"],
+      colors: ["Black", "Brown", "Navy"]
+    },
+    {
+      id: 27,
+      name: "Cufflinks Set",
+      price: 12900,
+      originalPrice: null,
+      image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=500&fit=crop",
+      category: "Jewelry",
+      sale: false,
+      new: true,
+      description: "Sterling silver cufflinks with engraved design",
+      sizes: ["One Size"],
+      colors: ["Silver", "Gold", "Rose Gold"]
+    },
+    {
+      id: 28,
+      name: "Designer Hat Collection",
+      price: 9900,
+      originalPrice: null,
+      image: "https://images.unsplash.com/photo-1544441892-794166f1e3be?w=400&h=500&fit=crop",
+      category: "Hats",
+      sale: false,
+      new: false,
+      description: "Premium felt hats with classic styling",
+      sizes: ["S", "M", "L"],
+      colors: ["Black", "Navy", "Grey"]
+    },
+    {
+      id: 29,
+      name: "Phone Case Luxury",
+      price: 7900,
+      originalPrice: 9900,
+      image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=500&fit=crop",
+      category: "Tech Accessories",
+      sale: true,
+      new: true,
+      description: "Luxury leather phone case with card slots",
+      sizes: ["iPhone", "Samsung"],
+      colors: ["Black", "Brown", "Red"]
+    },
+    {
+      id: 30,
+      name: "Keychain Collection",
+      price: 4900,
+      originalPrice: null,
+      image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=500&fit=crop",
+      category: "Keychains",
+      sale: false,
+      new: false,
+      description: "Premium metal keychains with elegant design",
+      sizes: ["One Size"],
+      colors: ["Silver", "Gold", "Black"]
     }
   ];
 
-  const categories = ['All', ...new Set(menProducts.map(product => product.category))];
+  const categories = ['All', ...new Set(accessoryProducts.map(product => product.category))];
 
-  const filteredProducts = menProducts
+  const filteredProducts = accessoryProducts
     .filter(product => selectedCategory === 'All' || product.category === selectedCategory)
     .sort((a, b) => {
       switch (sortBy) {
@@ -166,7 +218,7 @@ const Men = () => {
     return (
       <div className="loading-screen">
         <div className="loading-spinner"></div>
-        <p>Loading Men's Collection...</p>
+        <p>Loading Accessories Collection...</p>
       </div>
     );
   }
@@ -175,14 +227,14 @@ const Men = () => {
     <div className="products-page">
       <div className="products-hero">
         <div className="hero-content">
-          <h1 className="hero-title">Men's Collection</h1>
-          <p className="hero-subtitle">Discover timeless elegance and contemporary style</p>
+          <h1 className="hero-title">Accessories Collection</h1>
+          <p className="hero-subtitle">Complete your look with our premium accessories</p>
         </div>
       </div>
 
       <div className="products-container">
         <div className="products-header">
-          <h2>Premium Men's Fashion</h2>
+          <h2>Premium Accessories</h2>
           <p className="products-count">{filteredProducts.length} Products</p>
         </div>
 
@@ -214,7 +266,7 @@ const Men = () => {
                 <div className="product-overlay">
                   <button 
                     className="quick-view-btn"
-                    onClick={() => navigate(`/product/men/${product.id}`)}
+                    onClick={() => navigate(`/product/accessories/${product.id}`)}
                   >
                     View Details
                   </button>
@@ -248,4 +300,4 @@ const Men = () => {
   );
 };
 
-export default Men;
+export default Accessories;

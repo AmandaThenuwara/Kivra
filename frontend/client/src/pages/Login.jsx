@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import './Pages.css';
 
 const Login = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -63,7 +65,8 @@ const Login = () => {
       // const response = await fetch('/api/auth/login', { ... });
       
       // Redirect to dashboard or home page on success
-      alert('Login successful! (This is a demo)');
+      alert('Login successful! Welcome to Kivra!');
+      navigate('/'); // Navigate to home page after successful login
     } catch (error) {
       setErrors({ general: 'Login failed. Please try again.' });
     } finally {
@@ -160,9 +163,9 @@ const Login = () => {
         <div className="auth-footer">
           <p>
             Don't have an account?{' '}
-            <a href="/register" className="auth-link">
+            <Link to="/register" className="auth-link">
               Create one here
-            </a>
+            </Link>
           </p>
         </div>
 

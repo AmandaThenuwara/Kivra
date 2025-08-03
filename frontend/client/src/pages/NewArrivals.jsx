@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Products.css';
 
 const NewArrivals = () => {
@@ -6,6 +7,7 @@ const NewArrivals = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [sortBy, setSortBy] = useState('newest');
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Simulate loading effect
@@ -219,20 +221,6 @@ const NewArrivals = () => {
               ))}
             </select>
           </div>
-          
-          <div className="filter-group">
-            <label>Sort by:</label>
-            <select 
-              value={sortBy} 
-              onChange={(e) => setSortBy(e.target.value)}
-              className="filter-select"
-            >
-              <option value="newest">Newest First</option>
-              <option value="name">Name</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-            </select>
-          </div>
         </div>
 
         <div className="products-grid">
@@ -247,9 +235,9 @@ const NewArrivals = () => {
                 <div className="product-overlay">
                   <button 
                     className="quick-view-btn"
-                    onClick={() => console.log('Quick view:', product.name)}
+                    onClick={() => navigate(`/product/new-arrivals/${product.id}`)}
                   >
-                    Quick View
+                    View Details
                   </button>
                 </div>
               </div>
@@ -259,37 +247,8 @@ const NewArrivals = () => {
                 <h3 className="product-name">{product.name}</h3>
                 <p className="product-description">{product.description}</p>
                 
-                <div className="arrival-info">
-                  <span className="arrival-date">
-                    Arrived: {new Date(product.arrivalDate).toLocaleDateString()}
-                  </span>
-                  {product.limited && (
-                    <span className="limited-info">Limited Edition</span>
-                  )}
-                </div>
-                
-                <div className="product-options">
-                  <div className="size-options">
-                    <span className="option-label">Sizes:</span>
-                    <div className="options-list">
-                      {product.sizes.map(size => (
-                        <span key={size} className="option-item">{size}</span>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className="color-options">
-                    <span className="option-label">Colors:</span>
-                    <div className="options-list">
-                      {product.colors.map(color => (
-                        <span key={color} className="option-item">{color}</span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                
                 <div className="product-price">
-                  <span className="current-price">${product.price}</span>
+                  <span className="current-price">LKR {product.price}</span>
                   <span className="new-label">New Arrival</span>
                 </div>
                 <button 
@@ -302,16 +261,6 @@ const NewArrivals = () => {
               </div>
             </div>
           ))}
-        </div>
-      </div>
-
-      <div className="cart-summary">
-        <div className="cart-info">
-          <h3>Cart Summary</h3>
-          <p>{cart.reduce((total, item) => total + item.quantity, 0)} items in cart</p>
-          <p className="cart-total">
-            Total: ${cart.reduce((total, item) => total + (item.price * item.quantity), 0)}
-          </p>
         </div>
       </div>
     </div>
