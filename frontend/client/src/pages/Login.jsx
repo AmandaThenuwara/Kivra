@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './Pages.css';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -64,7 +66,8 @@ const Login = () => {
       // Here you would typically make an API call to your backend
       // const response = await fetch('/api/auth/login', { ... });
       
-      // Redirect to dashboard or home page on success
+      // Login user and redirect to home page
+      login(formData);
       alert('Login successful! Welcome to Kivra!');
       navigate('/'); // Navigate to home page after successful login
     } catch (error) {

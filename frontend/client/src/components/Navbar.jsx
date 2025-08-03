@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 import './Navbar.css';
 
 const Navbar = () => {
+  const { user, isAuthenticated, logout } = useAuth();
+  const { getCartCount } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchActive, setIsSearchActive] = useState(false);
-  const [cartCount, setCartCount] = useState(3);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  
+  const cartCount = getCartCount();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,6 +39,12 @@ const Navbar = () => {
         document.querySelector('.search-input')?.focus();
       }, 100);
     }
+  };
+
+  const handleLogout = () => {
+    logout();
+    setShowUserMenu(false);
+    alert('You have been logged out successfully!');
   };
 
   return (
@@ -91,9 +103,35 @@ const Navbar = () => {
           </div>
 
           <div className="user-menu">
-            <Link to="/login" className="login-btn">
-              <span>Login</span>
-            </Link>
+            {isAuthenticated ? (
+              <div className="user-profile" onClick={() => setShowUserMenu(!showUserMenu)}>
+                <div className="user-avatar">
+                  <span className="user-initial">
+                    {user.firstName ? user.firstName.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+                <span className="user-name">
+                  {user.firstName || user.email.split('@')[0]}
+                </span>
+                {showUserMenu && (
+                  <div className="user-dropdown">
+                    <Link to="/profile" className="dropdown-item" onClick={() => setShowUserMenu(false)}>
+                      <span>Profile</span>
+                    </Link>
+                    <Link to="/orders" className="dropdown-item" onClick={() => setShowUserMenu(false)}>
+                      <span>My Orders</span>
+                    </Link>
+                    <button className="dropdown-item logout-btn" onClick={handleLogout}>
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link to="/login" className="login-btn">
+                <span>Login</span>
+              </Link>
+            )}
           </div>
 
           <Link to="/cart" className="cart-btn" title="Shopping Cart">
@@ -103,6 +141,9 @@ const Navbar = () => {
                 <path d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z"></path>
                 <path d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6"></path>
               </svg>
+              {cartCount > 0 && (
+                <span className="cart-badge">{cartCount}</span>
+              )}
             </div>
             <span className="cart-text">Cart</span>
           </Link>

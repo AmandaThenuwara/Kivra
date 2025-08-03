@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './Pages.css';
 
 const Register = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -105,8 +107,9 @@ const Register = () => {
       // const response = await fetch('/api/auth/register', { ... });
       
       // Show success message and redirect
-      alert('Registration successful! Welcome to Kivra! Please login with your new account.');
-      navigate('/login'); // Navigate to login page after successful registration
+      alert('Registration successful! Welcome to Kivra! You are now logged in.');
+      login(formData); // Auto-login after registration
+      navigate('/'); // Navigate to home page after successful registration
     } catch (error) {
       setErrors({ general: 'Registration failed. Please try again.' });
     } finally {

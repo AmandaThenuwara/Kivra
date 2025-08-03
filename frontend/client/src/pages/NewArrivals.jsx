@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 import './Products.css';
 
 const NewArrivals = () => {
-  const [cart, setCart] = useState([]);
+  const { addToCart } = useCart();
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [sortBy, setSortBy] = useState('newest');
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -140,32 +140,10 @@ const NewArrivals = () => {
   const categories = ['All', ...new Set(newArrivalProducts.map(product => product.category))];
 
   const filteredProducts = newArrivalProducts
-    .filter(product => selectedCategory === 'All' || product.category === selectedCategory)
-    .sort((a, b) => {
-      switch (sortBy) {
-        case 'newest':
-          return new Date(b.arrivalDate) - new Date(a.arrivalDate);
-        case 'price-low':
-          return a.price - b.price;
-        case 'price-high':
-          return b.price - a.price;
-        case 'name':
-        default:
-          return a.name.localeCompare(b.name);
-      }
-    });
+    .filter(product => selectedCategory === 'All' || product.category === selectedCategory);
 
-  const addToCart = (product) => {
-    const existingItem = cart.find(item => item.id === product.id);
-    if (existingItem) {
-      setCart(cart.map(item => 
-        item.id === product.id 
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
-      ));
-    } else {
-      setCart([...cart, { ...product, quantity: 1 }]);
-    }
+  const handleAddToCart = (product) => {
+    addToCart(product);
     
     // Show success message
     const button = document.querySelector(`[data-product-id="${product.id}"]`);
@@ -254,7 +232,7 @@ const NewArrivals = () => {
                 <button 
                   className="add-to-cart-btn new-arrival-btn"
                   data-product-id={product.id}
-                  onClick={() => addToCart(product)}
+                  onClick={() => handleAddToCart(product)}
                 >
                   Add to Cart
                 </button>
