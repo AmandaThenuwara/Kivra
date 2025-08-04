@@ -22,6 +22,12 @@ body {
 .App {
   min-height: 100vh;
   background: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
 }
 
 /* Smooth scrolling */

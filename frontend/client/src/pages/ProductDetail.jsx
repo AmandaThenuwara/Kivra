@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import SizeChart from '../components/SizeChart';
 import './Products.css';
 
 const ProductDetail = () => {
@@ -8,6 +9,7 @@ const ProductDetail = () => {
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [cart, setCart] = useState([]);
+  const [sizeChartOpen, setSizeChartOpen] = useState(false);
 
   // Combined product data from all categories
   const allProducts = [
@@ -241,7 +243,7 @@ const ProductDetail = () => {
     {
       id: 17,
       name: "Limited Edition Jacket",
-      price: 59900,
+      price: 599,
       originalPrice: null,
       image: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=400&h=500&fit=crop",
       category: "Outerwear",
@@ -257,7 +259,7 @@ const ProductDetail = () => {
     {
       id: 18,
       name: "Artisan Leather Boots",
-      price: 44900,
+      price: 449,
       originalPrice: null,
       image: "https://images.unsplash.com/photo-1608256246200-53e8b47b8fd9?w=400&h=500&fit=crop",
       category: "Footwear",
@@ -273,7 +275,7 @@ const ProductDetail = () => {
     {
       id: 19,
       name: "Signature Fragrance",
-      price: 18900,
+      price: 189,
       originalPrice: null,
       image: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=500&fit=crop",
       category: "Fragrance",
@@ -289,7 +291,7 @@ const ProductDetail = () => {
     {
       id: 20,
       name: "Premium Denim Collection",
-      price: 29900,
+      price: 299,
       originalPrice: null,
       image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=500&fit=crop",
       category: "Denim",
@@ -305,7 +307,7 @@ const ProductDetail = () => {
     {
       id: 21,
       name: "Exclusive Designer Dress",
-      price: 89900,
+      price: 899,
       originalPrice: null,
       image: "https://images.unsplash.com/photo-1566479179817-c7707b8c01fe?w=400&h=500&fit=crop",
       category: "Dresses",
@@ -321,7 +323,7 @@ const ProductDetail = () => {
     {
       id: 22,
       name: "Luxury Sport Watch",
-      price: 189900,
+      price: 1899,
       originalPrice: null,
       image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=400&h=500&fit=crop",
       category: "Watches",
@@ -337,7 +339,7 @@ const ProductDetail = () => {
     {
       id: 23,
       name: "Designer Sneakers",
-      price: 34900,
+      price: 349,
       originalPrice: null,
       image: "https://images.unsplash.com/photo-1560072810-1cdd64903750?w=400&h=500&fit=crop",
       category: "Sneakers",
@@ -485,6 +487,13 @@ const ProductDetail = () => {
     alert('Product added to cart successfully!');
   };
 
+  // Helper function to determine gender based on category
+  const getGender = () => {
+    if (category === 'men') return 'men';
+    if (category === 'women') return 'women';
+    return 'general';
+  };
+
   return (
     <div className="product-detail-page">
       <div className="product-detail-container">
@@ -528,6 +537,12 @@ const ProductDetail = () => {
                     </button>
                   ))}
                 </div>
+                <button 
+                  className="size-guide-btn"
+                  onClick={() => setSizeChartOpen(true)}
+                >
+                  Size Guide
+                </button>
               </div>
 
               <div className="color-selection">
@@ -560,6 +575,13 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
+      
+      <SizeChart 
+        isOpen={sizeChartOpen}
+        onClose={() => setSizeChartOpen(false)}
+        category={product.category}
+        gender={getGender()}
+      />
     </div>
   );
 };

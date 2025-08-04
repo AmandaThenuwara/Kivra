@@ -569,6 +569,18 @@
   box-shadow: 0 10px 30px rgba(128, 0, 32, 0.4);
 }
 
+/* Product Actions Container */
+.product-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.product-actions .add-to-cart-btn {
+  margin: 0;
+}
+
 .new-arrival-btn {
   background: linear-gradient(135deg, #D4AF37, #F4E4BC);
   color: #000000;
