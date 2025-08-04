@@ -56,15 +56,8 @@ const Footer = () => {
               <a href="#" className="social-link" aria-label="Instagram">
                 <i className="fab fa-instagram"></i>
               </a>
-              <a href="#" className="social-link" aria-label="Twitter">
-                <i className="fab fa-twitter"></i>
-              </a>
-              <a href="#" className="social-link" aria-label="Pinterest">
-                <i className="fab fa-pinterest"></i>
-              </a>
-              <a href="#" className="social-link" aria-label="YouTube">
-                <i className="fab fa-youtube"></i>
-              </a>
+              
+              
             </div>
           </div>
 
@@ -155,30 +148,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Payment Methods */}
-        <div className="payment-methods">
-          <h4>Secure Payment Methods</h4>
-          <div className="payment-icons">
-            <div className="payment-icon">
-              <i className="fab fa-cc-visa"></i>
-            </div>
-            <div className="payment-icon">
-              <i className="fab fa-cc-mastercard"></i>
-            </div>
-            <div className="payment-icon">
-              <i className="fab fa-cc-amex"></i>
-            </div>
-            <div className="payment-icon">
-              <i className="fab fa-cc-paypal"></i>
-            </div>
-            <div className="payment-icon">
-              <i className="fab fa-apple-pay"></i>
-            </div>
-            <div className="payment-icon">
-              <i className="fab fa-google-pay"></i>
-            </div>
-          </div>
-        </div>
+       
 
         {/* Footer Bottom */}
         <div className="footer-bottom">
