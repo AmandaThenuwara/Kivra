@@ -208,6 +208,15 @@
   box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
 }
 
+.form-group input:disabled,
+.form-group select:disabled {
+  background: rgba(240, 240, 240, 0.8) !important;
+  color: #999 !important;
+  cursor: not-allowed !important;
+  border-color: rgba(212, 175, 55, 0.2) !important;
+  box-shadow: none !important;
+}
+
 .error-message {
   color: #dc2626;
   font-size: 0.85rem;
