@@ -1,8 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Footer.css';
 
 const Footer = () => {
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const handleNewsletterSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!email) {
+      setMessage('Please enter your email address');
+      return;
+    }
+
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setMessage('Please enter a valid email address');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setMessage('');
+
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setMessage('Successfully subscribed to our newsletter!');
+      setEmail('');
+    } catch (error) {
+      setMessage('Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => setMessage(''), 3000);
+    }
+  };
+
   return (
     <footer className="footer">
       <div className="footer-container">
@@ -80,18 +113,30 @@ const Footer = () => {
             <p className="newsletter-text">
               Subscribe to our newsletter for exclusive offers, style tips, and early access to new collections.
             </p>
-            <form className="newsletter-form">
+            <form className="newsletter-form" onSubmit={handleNewsletterSubmit}>
               <div className="newsletter-input-group">
                 <input 
                   type="email" 
                   placeholder="Enter your email"
                   className="newsletter-input"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={isSubmitting}
                   required
                 />
-                <button type="submit" className="newsletter-btn">
-                  Subscribe
+                <button 
+                  type="submit" 
+                  className="newsletter-btn"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Subscribing...' : 'Subscribe'}
                 </button>
               </div>
+              {message && (
+                <div className={`newsletter-message ${message.includes('Successfully') ? 'success' : 'error'}`}>
+                  {message}
+                </div>
+              )}
             </form>
             <div className="contact-info">
               <div className="contact-item">
