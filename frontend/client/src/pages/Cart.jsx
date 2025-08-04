@@ -9,6 +9,19 @@ const Cart = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [checkoutStep, setCheckoutStep] = useState('cart'); // 'cart', 'shipping', 'payment'
+  const [shippingDetails, setShippingDetails] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    address: '',
+    apartment: '',
+    city: '',
+    province: '',
+    postalCode: '',
+    country: 'Sri Lanka'
+  });
 
   const handleQuantityChange = (cartId, newQuantity) => {
     if (newQuantity < 1) return;
@@ -25,9 +38,9 @@ const Cart = () => {
     }
   };
 
-  const handleProceedToPayment = () => {
+  const handleProceedToShipping = () => {
     if (!isAuthenticated) {
-      alert('Please login to proceed with payment');
+      alert('Please login to proceed with checkout');
       navigate('/login');
       return;
     }
@@ -37,13 +50,66 @@ const Cart = () => {
       return;
     }
 
+    setCheckoutStep('shipping');
+  };
+
+  const handleShippingSubmit = (e) => {
+    e.preventDefault();
+    
+    // Validate required fields
+    const requiredFields = ['firstName', 'lastName', 'email', 'phone', 'address', 'city', 'province', 'postalCode'];
+    const missingFields = requiredFields.filter(field => !shippingDetails[field].trim());
+    
+    if (missingFields.length > 0) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(shippingDetails.email)) {
+      alert('Please enter a valid email address');
+      return;
+    }
+
+    // Phone validation (basic)
+    const phoneRegex = /^[0-9+\-\s()]+$/;
+    if (!phoneRegex.test(shippingDetails.phone)) {
+      alert('Please enter a valid phone number');
+      return;
+    }
+
+    setCheckoutStep('payment');
+  };
+
+  const handleShippingInputChange = (field, value) => {
+    setShippingDetails(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleProceedToPayment = () => {
     setIsProcessing(true);
     
     // Simulate payment processing
     setTimeout(() => {
-      alert(`Payment successful! Total: LKR ${getCartTotal().toLocaleString()}\n\nThank you for your purchase!`);
+      alert(`Payment successful! Total: LKR ${finalTotal.toLocaleString()}\n\nThank you for your purchase!\n\nShipping to:\n${shippingDetails.firstName} ${shippingDetails.lastName}\n${shippingDetails.address}\n${shippingDetails.city}, ${shippingDetails.province} ${shippingDetails.postalCode}`);
       clearCart();
       setIsProcessing(false);
+      setCheckoutStep('cart');
+      setShippingDetails({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        address: '',
+        apartment: '',
+        city: '',
+        province: '',
+        postalCode: '',
+        country: 'Sri Lanka'
+      });
       navigate('/');
     }, 2000);
   };
@@ -88,11 +154,33 @@ const Cart = () => {
     <div className="cart-page">
       <div className="container">
         <div className="cart-header">
-          <h1 className="cart-title">Shopping Cart</h1>
+          <h1 className="cart-title">
+            {checkoutStep === 'cart' && 'Shopping Cart'}
+            {checkoutStep === 'shipping' && 'Shipping Details'}
+            {checkoutStep === 'payment' && 'Payment'}
+          </h1>
           <p className="cart-count">{cartCount} items</p>
         </div>
 
-        <div className="cart-content">
+        {/* Checkout Steps Indicator */}
+        <div className="checkout-steps">
+          <div className={`step ${checkoutStep === 'cart' ? 'active' : checkoutStep === 'shipping' || checkoutStep === 'payment' ? 'completed' : ''}`}>
+            <div className="step-number">1</div>
+            <div className="step-label">Cart</div>
+          </div>
+          <div className={`step ${checkoutStep === 'shipping' ? 'active' : checkoutStep === 'payment' ? 'completed' : ''}`}>
+            <div className="step-number">2</div>
+            <div className="step-label">Shipping</div>
+          </div>
+          <div className={`step ${checkoutStep === 'payment' ? 'active' : ''}`}>
+            <div className="step-number">3</div>
+            <div className="step-label">Payment</div>
+          </div>
+        </div>
+
+        {/* Cart Step */}
+        {checkoutStep === 'cart' && (
+          <div className="cart-content">
           <div className="cart-items">
             <div className="cart-actions-top">
               <button 
@@ -216,27 +304,342 @@ const Cart = () => {
               </div>
 
               <button 
-                className={`pay-button ${isProcessing ? 'processing' : ''}`}
-                onClick={handleProceedToPayment}
-                disabled={isProcessing}
+                className="btn-primary checkout-button"
+                onClick={handleProceedToShipping}
               >
-                {isProcessing ? (
-                  <>
-                    <span className="spinner"></span>
-                    Processing...
-                  </>
-                ) : (
-                  `Pay LKR ${finalTotal.toLocaleString()}`
-                )}
+                Proceed to Shipping
               </button>
 
               <div className="secure-payment">
                 <span className="secure-icon">🔒</span>
-                <span>Secure payment powered by SSL</span>
+                <span>Secure checkout</span>
               </div>
             </div>
           </div>
         </div>
+        )}
+
+        {/* Shipping Step */}
+        {checkoutStep === 'shipping' && (
+          <div className="shipping-content">
+            <div className="shipping-form-container">
+              <div className="shipping-form-section">
+                <h2 className="form-section-title">Contact Information</h2>
+                <form onSubmit={handleShippingSubmit} className="shipping-form">
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="firstName">First Name *</label>
+                      <input
+                        type="text"
+                        id="firstName"
+                        value={shippingDetails.firstName}
+                        onChange={(e) => handleShippingInputChange('firstName', e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="lastName">Last Name *</label>
+                      <input
+                        type="text"
+                        id="lastName"
+                        value={shippingDetails.lastName}
+                        onChange={(e) => handleShippingInputChange('lastName', e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="email">Email *</label>
+                      <input
+                        type="email"
+                        id="email"
+                        value={shippingDetails.email}
+                        onChange={(e) => handleShippingInputChange('email', e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="phone">Phone Number *</label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        value={shippingDetails.phone}
+                        onChange={(e) => handleShippingInputChange('phone', e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <h2 className="form-section-title">Shipping Address</h2>
+                  
+                  <div className="form-group">
+                    <label htmlFor="address">Address *</label>
+                    <input
+                      type="text"
+                      id="address"
+                      value={shippingDetails.address}
+                      onChange={(e) => handleShippingInputChange('address', e.target.value)}
+                      placeholder="Street address"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="apartment">Apartment, suite, etc. (optional)</label>
+                    <input
+                      type="text"
+                      id="apartment"
+                      value={shippingDetails.apartment}
+                      onChange={(e) => handleShippingInputChange('apartment', e.target.value)}
+                      placeholder="Apartment, suite, etc."
+                    />
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="city">City *</label>
+                      <input
+                        type="text"
+                        id="city"
+                        value={shippingDetails.city}
+                        onChange={(e) => handleShippingInputChange('city', e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="province">Province *</label>
+                      <select
+                        id="province"
+                        value={shippingDetails.province}
+                        onChange={(e) => handleShippingInputChange('province', e.target.value)}
+                        required
+                      >
+                        <option value="">Select Province</option>
+                        <option value="Western">Western</option>
+                        <option value="Central">Central</option>
+                        <option value="Southern">Southern</option>
+                        <option value="Northern">Northern</option>
+                        <option value="Eastern">Eastern</option>
+                        <option value="North Western">North Western</option>
+                        <option value="North Central">North Central</option>
+                        <option value="Uva">Uva</option>
+                        <option value="Sabaragamuwa">Sabaragamuwa</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="postalCode">Postal Code *</label>
+                      <input
+                        type="text"
+                        id="postalCode"
+                        value={shippingDetails.postalCode}
+                        onChange={(e) => handleShippingInputChange('postalCode', e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="country">Country</label>
+                      <input
+                        type="text"
+                        id="country"
+                        value={shippingDetails.country}
+                        disabled
+                        className="disabled-input"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-actions">
+                    <button 
+                      type="button" 
+                      className="btn-secondary"
+                      onClick={() => setCheckoutStep('cart')}
+                    >
+                      Back to Cart
+                    </button>
+                    <button type="submit" className="btn-primary">
+                      Continue to Payment
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <div className="order-summary-sidebar">
+                <div className="summary-card">
+                  <h3 className="summary-title">Order Summary</h3>
+                  
+                  <div className="summary-items">
+                    {cartItems.slice(0, 3).map((item) => (
+                      <div key={item.cartId} className="summary-item">
+                        <img src={item.image} alt={item.name} className="summary-item-image" />
+                        <div className="summary-item-details">
+                          <p className="summary-item-name">{item.name}</p>
+                          <p className="summary-item-info">
+                            {item.selectedSize} • {item.selectedColor} • Qty: {item.quantity}
+                          </p>
+                        </div>
+                        <span className="summary-item-price">
+                          LKR {(item.price * item.quantity).toLocaleString()}
+                        </span>
+                      </div>
+                    ))}
+                    {cartItems.length > 3 && (
+                      <div className="summary-more">
+                        +{cartItems.length - 3} more items
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="summary-line">
+                    <span>Subtotal:</span>
+                    <span>LKR {cartTotal.toLocaleString()}</span>
+                  </div>
+                  
+                  <div className="summary-line">
+                    <span>Shipping:</span>
+                    <span>
+                      {shippingCost === 0 ? (
+                        <span className="free-shipping">FREE</span>
+                      ) : (
+                        `LKR ${shippingCost.toLocaleString()}`
+                      )}
+                    </span>
+                  </div>
+                  
+                  <div className="summary-line total-line">
+                    <span>Total:</span>
+                    <span className="final-total">LKR {finalTotal.toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Payment Step */}
+        {checkoutStep === 'payment' && (
+          <div className="payment-content">
+            <div className="payment-container">
+              <div className="payment-form-section">
+                <h2 className="form-section-title">Payment Information</h2>
+                
+                <div className="shipping-summary">
+                  <h3>Shipping to:</h3>
+                  <div className="shipping-address">
+                    <p><strong>{shippingDetails.firstName} {shippingDetails.lastName}</strong></p>
+                    <p>{shippingDetails.address}</p>
+                    {shippingDetails.apartment && <p>{shippingDetails.apartment}</p>}
+                    <p>{shippingDetails.city}, {shippingDetails.province} {shippingDetails.postalCode}</p>
+                    <p>{shippingDetails.country}</p>
+                    <p>📧 {shippingDetails.email}</p>
+                    <p>📱 {shippingDetails.phone}</p>
+                  </div>
+                  <button 
+                    className="btn-link"
+                    onClick={() => setCheckoutStep('shipping')}
+                  >
+                    Edit shipping details
+                  </button>
+                </div>
+
+                <div className="payment-methods">
+                  <h3>Payment Method</h3>
+                  <div className="payment-options">
+                    <div className="payment-option selected">
+                      <input type="radio" id="card" name="payment" checked readOnly />
+                      <label htmlFor="card">Credit/Debit Card</label>
+                      <div className="card-icons">
+                        <span>💳</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="form-actions">
+                  <button 
+                    type="button" 
+                    className="btn-secondary"
+                    onClick={() => setCheckoutStep('shipping')}
+                  >
+                    Back to Shipping
+                  </button>
+                  <button 
+                    className={`btn-primary pay-button ${isProcessing ? 'processing' : ''}`}
+                    onClick={handleProceedToPayment}
+                    disabled={isProcessing}
+                  >
+                    {isProcessing ? (
+                      <>
+                        <span className="spinner"></span>
+                        Processing...
+                      </>
+                    ) : (
+                      `Pay LKR ${finalTotal.toLocaleString()}`
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              <div className="order-summary-sidebar">
+                <div className="summary-card">
+                  <h3 className="summary-title">Order Summary</h3>
+                  
+                  <div className="summary-items">
+                    {cartItems.slice(0, 3).map((item) => (
+                      <div key={item.cartId} className="summary-item">
+                        <img src={item.image} alt={item.name} className="summary-item-image" />
+                        <div className="summary-item-details">
+                          <p className="summary-item-name">{item.name}</p>
+                          <p className="summary-item-info">
+                            {item.selectedSize} • {item.selectedColor} • Qty: {item.quantity}
+                          </p>
+                        </div>
+                        <span className="summary-item-price">
+                          LKR {(item.price * item.quantity).toLocaleString()}
+                        </span>
+                      </div>
+                    ))}
+                    {cartItems.length > 3 && (
+                      <div className="summary-more">
+                        +{cartItems.length - 3} more items
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="summary-line">
+                    <span>Subtotal:</span>
+                    <span>LKR {cartTotal.toLocaleString()}</span>
+                  </div>
+                  
+                  <div className="summary-line">
+                    <span>Shipping:</span>
+                    <span>
+                      {shippingCost === 0 ? (
+                        <span className="free-shipping">FREE</span>
+                      ) : (
+                        `LKR ${shippingCost.toLocaleString()}`
+                      )}
+                    </span>
+                  </div>
+                  
+                  <div className="summary-line total-line">
+                    <span>Total:</span>
+                    <span className="final-total">LKR {finalTotal.toLocaleString()}</span>
+                  </div>
+
+                  <div className="secure-payment">
+                    <span className="secure-icon">🔒</span>
+                    <span>Secure payment powered by SSL</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
