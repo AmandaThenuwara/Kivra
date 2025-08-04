@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import Payment from '../components/Payment';
 import './Pages.css';
 
 const Cart = () => {
@@ -87,6 +88,25 @@ const Cart = () => {
       ...prev,
       [field]: value
     }));
+  };
+
+  const handlePaymentSuccess = (paymentData) => {
+    alert(`Payment successful! Total: LKR ${finalTotal.toLocaleString()}\n\nTransaction ID: ${paymentData.transactionId}\n\nThank you for your purchase!\n\nShipping to:\n${shippingDetails.firstName} ${shippingDetails.lastName}\n${shippingDetails.address}\n${shippingDetails.city}, ${shippingDetails.province} ${shippingDetails.postalCode}`);
+    clearCart();
+    setCheckoutStep('cart');
+    setShippingDetails({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      address: '',
+      apartment: '',
+      city: '',
+      province: '',
+      postalCode: '',
+      country: 'Sri Lanka'
+    });
+    navigate('/');
   };
 
   const handleProceedToPayment = () => {
@@ -522,123 +542,12 @@ const Cart = () => {
 
         {/* Payment Step */}
         {checkoutStep === 'payment' && (
-          <div className="payment-content">
-            <div className="payment-container">
-              <div className="payment-form-section">
-                <h2 className="form-section-title">Payment Information</h2>
-                
-                <div className="shipping-summary">
-                  <h3>Shipping to:</h3>
-                  <div className="shipping-address">
-                    <p><strong>{shippingDetails.firstName} {shippingDetails.lastName}</strong></p>
-                    <p>{shippingDetails.address}</p>
-                    {shippingDetails.apartment && <p>{shippingDetails.apartment}</p>}
-                    <p>{shippingDetails.city}, {shippingDetails.province} {shippingDetails.postalCode}</p>
-                    <p>{shippingDetails.country}</p>
-                    <p>📧 {shippingDetails.email}</p>
-                    <p>📱 {shippingDetails.phone}</p>
-                  </div>
-                  <button 
-                    className="btn-link"
-                    onClick={() => setCheckoutStep('shipping')}
-                  >
-                    Edit shipping details
-                  </button>
-                </div>
-
-                <div className="payment-methods">
-                  <h3>Payment Method</h3>
-                  <div className="payment-options">
-                    <div className="payment-option selected">
-                      <input type="radio" id="card" name="payment" checked readOnly />
-                      <label htmlFor="card">Credit/Debit Card</label>
-                      <div className="card-icons">
-                        <span>💳</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="form-actions">
-                  <button 
-                    type="button" 
-                    className="btn-secondary"
-                    onClick={() => setCheckoutStep('shipping')}
-                  >
-                    Back to Shipping
-                  </button>
-                  <button 
-                    className={`btn-primary pay-button ${isProcessing ? 'processing' : ''}`}
-                    onClick={handleProceedToPayment}
-                    disabled={isProcessing}
-                  >
-                    {isProcessing ? (
-                      <>
-                        <span className="spinner"></span>
-                        Processing...
-                      </>
-                    ) : (
-                      `Pay LKR ${finalTotal.toLocaleString()}`
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              <div className="order-summary-sidebar">
-                <div className="summary-card">
-                  <h3 className="summary-title">Order Summary</h3>
-                  
-                  <div className="summary-items">
-                    {cartItems.slice(0, 3).map((item) => (
-                      <div key={item.cartId} className="summary-item">
-                        <img src={item.image} alt={item.name} className="summary-item-image" />
-                        <div className="summary-item-details">
-                          <p className="summary-item-name">{item.name}</p>
-                          <p className="summary-item-info">
-                            {item.selectedSize} • {item.selectedColor} • Qty: {item.quantity}
-                          </p>
-                        </div>
-                        <span className="summary-item-price">
-                          LKR {(item.price * item.quantity).toLocaleString()}
-                        </span>
-                      </div>
-                    ))}
-                    {cartItems.length > 3 && (
-                      <div className="summary-more">
-                        +{cartItems.length - 3} more items
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="summary-line">
-                    <span>Subtotal:</span>
-                    <span>LKR {cartTotal.toLocaleString()}</span>
-                  </div>
-                  
-                  <div className="summary-line">
-                    <span>Shipping:</span>
-                    <span>
-                      {shippingCost === 0 ? (
-                        <span className="free-shipping">FREE</span>
-                      ) : (
-                        `LKR ${shippingCost.toLocaleString()}`
-                      )}
-                    </span>
-                  </div>
-                  
-                  <div className="summary-line total-line">
-                    <span>Total:</span>
-                    <span className="final-total">LKR {finalTotal.toLocaleString()}</span>
-                  </div>
-
-                  <div className="secure-payment">
-                    <span className="secure-icon">🔒</span>
-                    <span>Secure payment powered by SSL</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Payment
+            orderTotal={finalTotal}
+            shippingDetails={shippingDetails}
+            onPaymentSuccess={handlePaymentSuccess}
+            onBack={() => setCheckoutStep('shipping')}
+          />
         )}
       </div>
     </div>
