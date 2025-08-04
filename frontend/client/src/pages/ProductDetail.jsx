@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 import SizeChart from '../components/SizeChart';
 import './Products.css';
 
 const ProductDetail = () => {
   const { productId, category } = useParams();
   const navigate = useNavigate();
+  const { addToCart } = useCart();
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
-  const [cart, setCart] = useState([]);
   const [sizeChartOpen, setSizeChartOpen] = useState(false);
 
   // Combined product data from all categories
@@ -470,20 +471,13 @@ const ProductDetail = () => {
     );
   }
 
-  const addToCart = () => {
+  const handleAddToCart = () => {
     if (!selectedSize || !selectedColor) {
       alert('Please select both size and color before adding to cart');
       return;
     }
 
-    const cartItem = {
-      ...product,
-      selectedSize,
-      selectedColor,
-      quantity: 1
-    };
-
-    setCart(prev => [...prev, cartItem]);
+    const cartItem = addToCart(product, selectedSize, selectedColor);
     alert('Product added to cart successfully!');
   };
 
@@ -568,7 +562,7 @@ const ProductDetail = () => {
 
             <button 
               className="add-to-cart-btn-detail"
-              onClick={addToCart}
+              onClick={handleAddToCart}
             >
               Add to Cart
             </button>
