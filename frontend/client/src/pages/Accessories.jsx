@@ -26,7 +26,8 @@ const Accessories = () => {
       new: false,
       description: "Swiss movement luxury timepiece",
       sizes: ["One Size"],
-      colors: ["Silver", "Gold", "Black"]
+      colors: ["Silver", "Gold", "Black"],
+      pageCategory: "accessories"
     },
     {
       id: 8,
@@ -39,7 +40,8 @@ const Accessories = () => {
       new: true,
       description: "Hand-crafted silk ties with premium patterns",
       sizes: ["One Size"],
-      colors: ["Navy", "Burgundy", "Gold"]
+      colors: ["Navy", "Burgundy", "Gold"],
+      pageCategory: "accessories"
     },
     {
       id: 11,
@@ -52,7 +54,8 @@ const Accessories = () => {
       new: false,
       description: "Luxury leather handbag with gold hardware",
       sizes: ["One Size"],
-      colors: ["Black", "Tan", "Red"]
+      colors: ["Black", "Tan", "Red"],
+      pageCategory: "accessories"
     },
     {
       id: 15,
@@ -65,7 +68,8 @@ const Accessories = () => {
       new: false,
       description: "Pure silk scarf with hand-rolled edges",
       sizes: ["One Size"],
-      colors: ["Floral", "Geometric", "Abstract"]
+      colors: ["Floral", "Geometric", "Abstract"],
+      pageCategory: "accessories"
     },
     {
       id: 16,
@@ -78,7 +82,8 @@ const Accessories = () => {
       new: true,
       description: "Oversized sunglasses with UV protection",
       sizes: ["One Size"],
-      colors: ["Black", "Tortoise", "Gold"]
+      colors: ["Black", "Tortoise", "Gold"],
+      pageCategory: "accessories"
     },
     {
       id: 14,
@@ -91,7 +96,8 @@ const Accessories = () => {
       new: false,
       description: "Cultured pearl necklace and earring set",
       sizes: ["One Size"],
-      colors: ["White", "Cream", "Silver"]
+      colors: ["White", "Cream", "Silver"],
+      pageCategory: "accessories"
     },
     {
       id: 25,
@@ -104,7 +110,8 @@ const Accessories = () => {
       new: true,
       description: "Genuine leather belts with premium buckles",
       sizes: ["32", "34", "36", "38", "40"],
-      colors: ["Black", "Brown", "Cognac"]
+      colors: ["Black", "Brown", "Cognac"],
+      pageCategory: "accessories"
     },
     {
       id: 26,
@@ -117,7 +124,8 @@ const Accessories = () => {
       new: false,
       description: "Handcrafted leather wallet with RFID protection",
       sizes: ["One Size"],
-      colors: ["Black", "Brown", "Navy"]
+      colors: ["Black", "Brown", "Navy"],
+      pageCategory: "accessories"
     },
     {
       id: 27,
@@ -130,7 +138,8 @@ const Accessories = () => {
       new: true,
       description: "Sterling silver cufflinks with engraved design",
       sizes: ["One Size"],
-      colors: ["Silver", "Gold", "Rose Gold"]
+      colors: ["Silver", "Gold", "Rose Gold"],
+      pageCategory: "accessories"
     },
     {
       id: 28,
@@ -143,7 +152,8 @@ const Accessories = () => {
       new: false,
       description: "Premium felt hats with classic styling",
       sizes: ["S", "M", "L"],
-      colors: ["Black", "Navy", "Grey"]
+      colors: ["Black", "Navy", "Grey"],
+      pageCategory: "accessories"
     },
     {
       id: 29,
@@ -156,7 +166,8 @@ const Accessories = () => {
       new: true,
       description: "Luxury leather phone case with card slots",
       sizes: ["iPhone", "Samsung"],
-      colors: ["Black", "Brown", "Red"]
+      colors: ["Black", "Brown", "Red"],
+      pageCategory: "accessories"
     },
     {
       id: 30,
@@ -169,7 +180,8 @@ const Accessories = () => {
       new: false,
       description: "Premium metal keychains with elegant design",
       sizes: ["One Size"],
-      colors: ["Silver", "Gold", "Black"]
+      colors: ["Silver", "Gold", "Black"],
+      pageCategory: "accessories"
     }
   ];
 

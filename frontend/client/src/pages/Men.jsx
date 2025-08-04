@@ -27,7 +27,8 @@ const Men = () => {
       new: false,
       description: "Premium cotton oxford shirt with modern fit",
       sizes: ["S", "M", "L", "XL"],
-      colors: ["White", "Blue", "Light Blue"]
+      colors: ["White", "Blue", "Light Blue"],
+      pageCategory: "men"
     },
     {
       id: 2,
@@ -40,7 +41,8 @@ const Men = () => {
       new: true,
       description: "Handcrafted wool suit with Italian tailoring",
       sizes: ["38", "40", "42", "44", "46"],
-      colors: ["Navy", "Charcoal", "Black"]
+      colors: ["Navy", "Charcoal", "Black"],
+      pageCategory: "men"
     },
     {
       id: 3,
@@ -53,7 +55,8 @@ const Men = () => {
       new: false,
       description: "Genuine leather oxford shoes with leather sole",
       sizes: ["7", "8", "9", "10", "11", "12"],
-      colors: ["Black", "Brown", "Cognac"]
+      colors: ["Black", "Brown", "Cognac"],
+      pageCategory: "men"
     },
     {
       id: 4,
@@ -66,7 +69,8 @@ const Men = () => {
       new: true,
       description: "100% cashmere crew neck sweater",
       sizes: ["S", "M", "L", "XL"],
-      colors: ["Navy", "Grey", "Camel"]
+      colors: ["Navy", "Grey", "Camel"],
+      pageCategory: "men"
     },
     {
       id: 5,
@@ -79,7 +83,8 @@ const Men = () => {
       new: false,
       description: "Slim fit blazer with peak lapels",
       sizes: ["38", "40", "42", "44"],
-      colors: ["Navy", "Black", "Grey"]
+      colors: ["Navy", "Black", "Grey"],
+      pageCategory: "men"
     },
     {
       id: 6,
@@ -92,7 +97,8 @@ const Men = () => {
       new: false,
       description: "Premium denim with contemporary fit",
       sizes: ["30", "32", "34", "36", "38"],
-      colors: ["Dark Blue", "Black", "Light Blue"]
+      colors: ["Dark Blue", "Black", "Light Blue"],
+      pageCategory: "men"
     },
     {
       id: 7,
@@ -105,7 +111,8 @@ const Men = () => {
       new: false,
       description: "Swiss movement luxury timepiece",
       sizes: ["One Size"],
-      colors: ["Silver", "Gold", "Black"]
+      colors: ["Silver", "Gold", "Black"],
+      pageCategory: "men"
     },
     {
       id: 8,
@@ -118,7 +125,8 @@ const Men = () => {
       new: true,
       description: "Hand-crafted silk ties with premium patterns",
       sizes: ["One Size"],
-      colors: ["Navy", "Burgundy", "Gold"]
+      colors: ["Navy", "Burgundy", "Gold"],
+      pageCategory: "men"
     }
   ];
 

@@ -46,6 +46,7 @@ export const CartProvider = ({ children }) => {
       originalPrice: product.originalPrice,
       image: product.image,
       category: product.category,
+      pageCategory: product.pageCategory, // Add this to track which page the product came from
       description: product.description,
       selectedSize: selectedSize || (product.sizes && product.sizes[0]) || 'One Size',
       selectedColor: selectedColor || (product.colors && product.colors[0]) || 'Default',

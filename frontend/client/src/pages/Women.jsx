@@ -27,7 +27,8 @@ const Women = () => {
       new: false,
       description: "Sophisticated evening dress with flowing silhouette",
       sizes: ["XS", "S", "M", "L", "XL"],
-      colors: ["Black", "Navy", "Burgundy"]
+      colors: ["Black", "Navy", "Burgundy"],
+      pageCategory: "women"
     },
     {
       id: 10,
@@ -40,7 +41,8 @@ const Women = () => {
       new: true,
       description: "Pure silk blouse with French seams",
       sizes: ["XS", "S", "M", "L"],
-      colors: ["White", "Cream", "Blush"]
+      colors: ["White", "Cream", "Blush"],
+      pageCategory: "women"
     },
     {
       id: 11,
@@ -53,7 +55,8 @@ const Women = () => {
       new: false,
       description: "Luxury leather handbag with gold hardware",
       sizes: ["One Size"],
-      colors: ["Black", "Tan", "Red"]
+      colors: ["Black", "Tan", "Red"],
+      pageCategory: "women"
     },
     {
       id: 12,
@@ -66,7 +69,8 @@ const Women = () => {
       new: true,
       description: "Double-breasted cashmere coat with belt",
       sizes: ["XS", "S", "M", "L", "XL"],
-      colors: ["Camel", "Black", "Navy"]
+      colors: ["Camel", "Black", "Navy"],
+      pageCategory: "women"
     },
     {
       id: 13,
@@ -79,7 +83,8 @@ const Women = () => {
       new: false,
       description: "Classic pointed-toe pumps with 4-inch heel",
       sizes: ["5", "6", "7", "8", "9", "10"],
-      colors: ["Black", "Nude", "Red"]
+      colors: ["Black", "Nude", "Red"],
+      pageCategory: "women"
     },
     {
       id: 14,
@@ -92,7 +97,8 @@ const Women = () => {
       new: false,
       description: "Cultured pearl necklace and earring set",
       sizes: ["One Size"],
-      colors: ["White", "Cream", "Silver"]
+      colors: ["White", "Cream", "Silver"],
+      pageCategory: "women"
     },
     {
       id: 15,
@@ -105,7 +111,8 @@ const Women = () => {
       new: false,
       description: "Pure silk scarf with hand-rolled edges",
       sizes: ["One Size"],
-      colors: ["Floral", "Geometric", "Abstract"]
+      colors: ["Floral", "Geometric", "Abstract"],
+      pageCategory: "women"
     },
     {
       id: 16,
@@ -118,7 +125,8 @@ const Women = () => {
       new: true,
       description: "Oversized sunglasses with UV protection",
       sizes: ["One Size"],
-      colors: ["Black", "Tortoise", "Gold"]
+      colors: ["Black", "Tortoise", "Gold"],
+      pageCategory: "women"
     }
   ];
 

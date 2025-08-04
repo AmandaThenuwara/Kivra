@@ -28,7 +28,8 @@ const NewArrivals = () => {
       sizes: ["S", "M", "L", "XL"],
       colors: ["Black", "Olive", "Navy"],
       arrivalDate: "2025-07-28",
-      limited: true
+      limited: true,
+      pageCategory: "new-arrivals"
     },
     {
       id: 18,
@@ -43,7 +44,8 @@ const NewArrivals = () => {
       sizes: ["7", "8", "9", "10", "11", "12"],
       colors: ["Brown", "Black", "Tan"],
       arrivalDate: "2025-07-27",
-      limited: false
+      limited: false,
+      pageCategory: "new-arrivals"
     },
     {
       id: 19,
@@ -58,7 +60,8 @@ const NewArrivals = () => {
       sizes: ["50ml", "100ml"],
       colors: ["Classic"],
       arrivalDate: "2025-07-26",
-      limited: true
+      limited: true,
+      pageCategory: "new-arrivals"
     },
     {
       id: 20,
@@ -73,7 +76,8 @@ const NewArrivals = () => {
       sizes: ["28", "30", "32", "34", "36"],
       colors: ["Indigo", "Black", "Raw"],
       arrivalDate: "2025-07-25",
-      limited: false
+      limited: false,
+      pageCategory: "new-arrivals"
     },
     {
       id: 21,
@@ -88,7 +92,8 @@ const NewArrivals = () => {
       sizes: ["XS", "S", "M", "L"],
       colors: ["Midnight", "Emerald", "Ruby"],
       arrivalDate: "2025-07-24",
-      limited: true
+      limited: true,
+      pageCategory: "new-arrivals"
     },
     {
       id: 22,
@@ -103,7 +108,8 @@ const NewArrivals = () => {
       sizes: ["One Size"],
       colors: ["Titanium", "Black", "Blue"],
       arrivalDate: "2025-07-23",
-      limited: true
+      limited: true,
+      pageCategory: "new-arrivals"
     },
     {
       id: 23,
@@ -118,7 +124,8 @@ const NewArrivals = () => {
       sizes: ["7", "8", "9", "10", "11", "12"],
       colors: ["White", "Black", "Grey"],
       arrivalDate: "2025-07-22",
-      limited: false
+      limited: false,
+      pageCategory: "new-arrivals"
     },
     {
       id: 24,
@@ -133,7 +140,8 @@ const NewArrivals = () => {
       sizes: ["One Size"],
       colors: ["Tortoise", "Black", "Gold"],
       arrivalDate: "2025-07-21",
-      limited: false
+      limited: false,
+      pageCategory: "new-arrivals"
     }
   ];
 

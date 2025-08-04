@@ -90,6 +90,51 @@ const Cart = () => {
     }));
   };
 
+  const handleContinueShopping = () => {
+    // Determine the best category to return to based on cart contents
+    if (cartItems.length > 0) {
+      const lastItem = cartItems[cartItems.length - 1];
+      const category = lastItem.pageCategory || 'men'; // Default to men if no category
+      
+      // Navigate to the appropriate category page
+      if (category === 'men') {
+        navigate('/men');
+      } else if (category === 'women') {
+        navigate('/women');
+      } else if (category === 'new-arrivals') {
+        navigate('/new-arrivals');
+      } else if (category === 'accessories') {
+        navigate('/accessories');
+      } else {
+        navigate('/'); // Default to home
+      }
+    } else {
+      // If cart is empty, go to home
+      navigate('/');
+    }
+  };
+
+  const getContinueShoppingText = () => {
+    if (cartItems.length > 0) {
+      const lastItem = cartItems[cartItems.length - 1];
+      const category = lastItem.pageCategory || '';
+      
+      switch (category) {
+        case 'men':
+          return 'Continue Shopping - Men';
+        case 'women':
+          return 'Continue Shopping - Women';
+        case 'new-arrivals':
+          return 'Continue Shopping - New Arrivals';
+        case 'accessories':
+          return 'Continue Shopping - Accessories';
+        default:
+          return 'Continue Shopping';
+      }
+    }
+    return 'Continue Shopping';
+  };
+
   const handlePaymentSuccess = (paymentData) => {
     alert(`Payment successful! Total: LKR ${finalTotal.toLocaleString()}\n\nTransaction ID: ${paymentData.transactionId}\n\nThank you for your purchase!\n\nShipping to:\n${shippingDetails.firstName} ${shippingDetails.lastName}\n${shippingDetails.address}\n${shippingDetails.city}, ${shippingDetails.province} ${shippingDetails.postalCode}`);
     clearCart();
@@ -208,6 +253,12 @@ const Cart = () => {
                 onClick={handleClearCart}
               >
                 Clear Cart
+              </button>
+              <button 
+                className="btn-outline continue-shopping"
+                onClick={handleContinueShopping}
+              >
+                {getContinueShoppingText()}
               </button>
             </div>
 

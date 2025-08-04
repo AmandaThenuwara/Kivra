@@ -479,6 +479,9 @@ const ProductDetail = () => {
 
     const cartItem = addToCart(product, selectedSize, selectedColor);
     alert('Product added to cart successfully!');
+    
+    // Navigate to cart after adding item
+    navigate('/cart');
   };
 
   // Helper function to determine gender based on category
