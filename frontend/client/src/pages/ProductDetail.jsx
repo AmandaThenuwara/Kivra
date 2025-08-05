@@ -491,6 +491,57 @@ const ProductDetail = () => {
     return 'general';
   };
 
+  // Function to get similar products
+  const getSimilarProducts = () => {
+    if (!product) return [];
+    
+    // Create a scoring system for similarity
+    const scoredProducts = allProducts
+      .filter(p => p.id !== product.id) // Exclude current product
+      .map(p => {
+        let score = 0;
+        
+        // Same category gets highest priority
+        if (p.category === product.category) score += 10;
+        
+        // Same page category gets medium priority
+        if (p.pageCategory === product.pageCategory) score += 7;
+        
+        // Similar price range gets bonus points
+        const priceDiff = Math.abs(p.price - product.price);
+        const priceRange = product.price * 0.5; // 50% price range
+        if (priceDiff <= priceRange) score += 5;
+        
+        // Sale items prioritized if current item is on sale
+        if (product.sale && p.sale) score += 3;
+        
+        // New items prioritized if current item is new
+        if (product.new && p.new) score += 3;
+        
+        // Limited items get special priority
+        if (p.limited) score += 2;
+        
+        return { ...p, similarityScore: score };
+      })
+      .sort((a, b) => b.similarityScore - a.similarityScore); // Sort by score descending
+    
+    // Get products with similarity score > 0 first
+    let similarProducts = scoredProducts.filter(p => p.similarityScore > 0);
+    
+    // If we don't have enough similar products, add some random ones from the same page category
+    if (similarProducts.length < 4) {
+      const additionalProducts = scoredProducts
+        .filter(p => p.similarityScore === 0 && p.pageCategory === product.pageCategory)
+        .slice(0, 4 - similarProducts.length);
+      similarProducts = [...similarProducts, ...additionalProducts];
+    }
+    
+    // Return top 4 most similar products
+    return similarProducts.slice(0, 4);
+  };
+
+  const similarProducts = getSimilarProducts();
+
   return (
     <div className="product-detail-page">
       <div className="product-detail-container">
@@ -571,6 +622,83 @@ const ProductDetail = () => {
             </button>
           </div>
         </div>
+
+        {/* Similar Products Section */}
+        {similarProducts.length > 0 ? (
+          <div className="similar-products-section">
+            <h2 className="similar-products-title">You Might Also Like</h2>
+            <div className="similar-products-grid">
+              {similarProducts.map(similarProduct => (
+                <div key={similarProduct.id} className="similar-product-card">
+                  <div className="similar-product-image-container">
+                    <img 
+                      src={similarProduct.image} 
+                      alt={similarProduct.name} 
+                      className="similar-product-image"
+                    />
+                    <div className="similar-product-badges">
+                      {similarProduct.sale && <span className="badge sale-badge">SALE</span>}
+                      {similarProduct.new && <span className="badge new-badge">NEW</span>}
+                      {similarProduct.limited && <span className="badge limited-badge">LIMITED</span>}
+                    </div>
+                    <div className="similar-product-overlay">
+                      <button 
+                        className="similar-quick-view-btn"
+                        onClick={() => navigate(`/product/${similarProduct.pageCategory}/${similarProduct.id}`)}
+                      >
+                        View Details
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className="similar-product-info">
+                    <div className="similar-product-category">{similarProduct.category}</div>
+                    <h3 className="similar-product-name">{similarProduct.name}</h3>
+                    
+                    {/* Show similarity reason */}
+                    {similarProduct.category === product.category && (
+                      <div className="similarity-reason">Same Category</div>
+                    )}
+                    
+                    <div className="similar-product-price">
+                      <span className="current-price">LKR {similarProduct.price}</span>
+                      {similarProduct.originalPrice && (
+                        <span className="original-price">LKR {similarProduct.originalPrice}</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="similar-products-section">
+            <h2 className="similar-products-title">Explore More Products</h2>
+            <div className="no-similar-products">
+              <p>Check out our other collections for more amazing products!</p>
+              <div className="explore-buttons">
+                <button 
+                  className="explore-btn"
+                  onClick={() => navigate('/men')}
+                >
+                  Men's Collection
+                </button>
+                <button 
+                  className="explore-btn"
+                  onClick={() => navigate('/women')}
+                >
+                  Women's Collection
+                </button>
+                <button 
+                  className="explore-btn"
+                  onClick={() => navigate('/new-arrivals')}
+                >
+                  New Arrivals
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       
       <SizeChart 

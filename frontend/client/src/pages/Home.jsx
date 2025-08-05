@@ -12,48 +12,6 @@ const Home = () => {
 
   return (
     <div className="home">
-      {/* User Profile Section - Shows when logged in */}
-      {isAuthenticated && (
-        <section className="user-profile-section">
-          <div className="container">
-            <div className="profile-welcome">
-              <div className="profile-info">
-                <div className="profile-avatar">
-                  <span className="avatar-initial">
-                    {user.firstName ? user.firstName.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()}
-                  </span>
-                </div>
-                <div className="profile-details">
-                  <h2 className="welcome-title">
-                    Welcome back, {user.firstName || user.email.split('@')[0]}!
-                  </h2>
-                  <p className="welcome-subtitle">
-                    Ready to discover your next perfect style?
-                  </p>
-                  <div className="profile-stats">
-                    <div className="stat-item">
-                      <span className="stat-number">Member since</span>
-                      <span className="stat-label">
-                        {new Date(user.joinDate).toLocaleDateString('en-US', { 
-                          month: 'long', 
-                          year: 'numeric' 
-                        })}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="profile-actions">
-                <button className="btn-primary">View Profile</button>
-                <button className="btn-secondary" onClick={handleLogout}>
-                  Logout
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* Hero Section */}
       <section className="hero">
         <div className="hero-content">
