@@ -1,13 +1,19 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Home.css';
 
 const Home = () => {
   const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     alert('You have been logged out successfully!');
+  };
+
+  const handleCategoryNavigation = (category) => {
+    navigate(`/${category}`);
   };
 
   return (
@@ -55,21 +61,36 @@ const Home = () => {
               <div className="category-overlay">
                 <h3>Men's Collection</h3>
                 <p>Sophisticated & Modern</p>
-                <button className="category-btn">Explore</button>
+                <button 
+                  className="category-btn"
+                  onClick={() => handleCategoryNavigation('men')}
+                >
+                  Explore
+                </button>
               </div>
             </div>
             <div className="category-card women">
               <div className="category-overlay">
                 <h3>Women's Collection</h3>
                 <p>Elegant & Chic</p>
-                <button className="category-btn">Explore</button>
+                <button 
+                  className="category-btn"
+                  onClick={() => handleCategoryNavigation('women')}
+                >
+                  Explore
+                </button>
               </div>
             </div>
             <div className="category-card accessories">
               <div className="category-overlay">
                 <h3>Accessories</h3>
                 <p>Perfect Finishing Touches</p>
-                <button className="category-btn">Explore</button>
+                <button 
+                  className="category-btn"
+                  onClick={() => handleCategoryNavigation('accessories')}
+                >
+                  Explore
+                </button>
               </div>
             </div>
           </div>
@@ -85,32 +106,55 @@ const Home = () => {
           </div>
           <div className="products-grid">
             {[
-              { id: 1, name: 'Premium Silk Dress', category: 'Women\'s Wear', price: '$299.99', originalPrice: '$399.99', rating: 5, reviews: 124, image: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=300&h=400&fit=crop&crop=center' },
-              { id: 2, name: 'Luxury Wool Coat', category: 'Outerwear', price: '$499.99', originalPrice: '$699.99', rating: 5, reviews: 89, image: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=300&h=400&fit=crop&crop=center' },
-              { id: 3, name: 'Designer Leather Shoes', category: 'Footwear', price: '$349.99', originalPrice: '$449.99', rating: 5, reviews: 67, image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&h=400&fit=crop&crop=center' },
-              { id: 4, name: 'Cashmere Sweater', category: 'Knitwear', price: '$199.99', originalPrice: '$279.99', rating: 4, reviews: 156, image: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=300&h=400&fit=crop&crop=center' },
-              { id: 5, name: 'Statement Necklace', category: 'Jewelry', price: '$149.99', originalPrice: '$199.99', rating: 5, reviews: 203, image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=300&h=400&fit=crop&crop=center' },
-              { id: 6, name: 'Tailored Blazer', category: 'Men\'s Wear', price: '$399.99', originalPrice: '$549.99', rating: 5, reviews: 91, image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=300&h=400&fit=crop&crop=center' }
+              { id: 1, name: 'Premium Silk Dress', category: 'Women\'s Wear', price: '$299.99', originalPrice: '$399.99', rating: 5, reviews: 124, image: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=300&h=400&fit=crop&crop=center', isNew: true, discount: 25 },
+              { id: 2, name: 'Luxury Wool Coat', category: 'Outerwear', price: '$499.99', originalPrice: '$699.99', rating: 5, reviews: 89, image: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=300&h=400&fit=crop&crop=center', isNew: true, discount: 29 },
+              { id: 3, name: 'Designer Leather Shoes', category: 'Footwear', price: '$349.99', originalPrice: '$449.99', rating: 5, reviews: 67, image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&h=400&fit=crop&crop=center', isNew: true, discount: 22 },
+              { id: 4, name: 'Cashmere Sweater', category: 'Knitwear', price: '$199.99', originalPrice: '$279.99', rating: 4, reviews: 156, image: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=300&h=400&fit=crop&crop=center', isNew: true, discount: 29 }
             ].map((product) => (
               <div key={product.id} className="product-card">
                 <div className="product-image">
                   <img src={product.image} alt={product.name} />
                   <div className="product-overlay">
-                    <button className="quick-view-btn">Quick View</button>
-                    <button className="add-to-cart-btn">Add to Cart</button>
+                    <button className="quick-view-btn">
+                      <span className="btn-icon">👁️</span>
+                      <span>QUICK VIEW</span>
+                    </button>
+                    <button className="add-to-cart-btn">
+                      <span className="btn-icon">🛒</span>
+                      <span>ADD TO CART</span>
+                    </button>
                   </div>
-                  <div className="product-badge">New</div>
+                  <div className="product-badges">
+                    {product.isNew && <div className="product-badge new-badge">NEW</div>}
+                    {product.discount && <div className="product-badge discount-badge">{product.discount}% OFF</div>}
+                  </div>
+                  <div className="wishlist-btn-container">
+                    <button className="wishlist-btn">
+                      <span>💖</span>
+                    </button>
+                  </div>
                 </div>
                 <div className="product-info">
+                  <div className="product-header">
+                    <p className="product-category">{product.category}</p>
+                    <div className="product-rating">
+                      <div className="stars">{'★'.repeat(product.rating)}{'☆'.repeat(5-product.rating)}</div>
+                      <span className="rating-count">({product.reviews})</span>
+                    </div>
+                  </div>
                   <h3 className="product-name">{product.name}</h3>
-                  <p className="product-category">{product.category}</p>
                   <div className="product-price">
                     <span className="current-price">{product.price}</span>
                     <span className="original-price">{product.originalPrice}</span>
                   </div>
-                  <div className="product-rating">
-                    <div className="stars">{'★'.repeat(product.rating)}{'☆'.repeat(5-product.rating)}</div>
-                    <span className="rating-count">({product.reviews})</span>
+                  <div className="product-actions">
+                    <button className="product-action-btn primary">
+                      <span>View Details</span>
+                      <span className="arrow">→</span>
+                    </button>
+                    <button className="product-action-btn secondary">
+                      <span>Compare</span>
+                    </button>
                   </div>
                 </div>
               </div>
