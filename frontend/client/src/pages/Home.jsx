@@ -119,19 +119,9 @@ const Home = () => {
                       <span className="btn-icon">👁️</span>
                       <span>QUICK VIEW</span>
                     </button>
-                    <button className="add-to-cart-btn">
-                      <span className="btn-icon">🛒</span>
-                      <span>ADD TO CART</span>
-                    </button>
                   </div>
                   <div className="product-badges">
                     {product.isNew && <div className="product-badge new-badge">NEW</div>}
-                    {product.discount && <div className="product-badge discount-badge">{product.discount}% OFF</div>}
-                  </div>
-                  <div className="wishlist-btn-container">
-                    <button className="wishlist-btn">
-                      <span>💖</span>
-                    </button>
                   </div>
                 </div>
                 <div className="product-info">
@@ -148,12 +138,9 @@ const Home = () => {
                     <span className="original-price">{product.originalPrice}</span>
                   </div>
                   <div className="product-actions">
-                    <button className="product-action-btn primary">
+                    <button className="product-action-btn view-details">
                       <span>View Details</span>
                       <span className="arrow">→</span>
-                    </button>
-                    <button className="product-action-btn secondary">
-                      <span>Compare</span>
                     </button>
                   </div>
                 </div>
