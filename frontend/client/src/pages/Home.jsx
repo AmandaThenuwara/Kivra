@@ -37,7 +37,7 @@ const Home = () => {
             </h1>
             <p className="hero-subtitle">
               {isAuthenticated ? (
-                `Explore personalized recommendations and exclusive collections curated just for you, ${user.firstName || user.email.split('@')[0]}`
+                `Explore personalized recommendations and exclusive collections curated just for you, ${user?.firstName || user?.email.split('@')[0]}`
               ) : (
                 "Explore our curated collection of premium clothing that defines modern elegance and sophistication"
               )}
@@ -106,29 +106,71 @@ const Home = () => {
           </div>
           <div className="products-grid">
             {[
-              { id: 1, name: 'Premium Silk Dress', category: 'Women\'s Wear', price: '$299.99', originalPrice: '$399.99', rating: 5, reviews: 124, image: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=300&h=400&fit=crop&crop=center', isNew: true, discount: 25 },
-              { id: 2, name: 'Luxury Wool Coat', category: 'Outerwear', price: '$499.99', originalPrice: '$699.99', rating: 5, reviews: 89, image: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=300&h=400&fit=crop&crop=center', isNew: true, discount: 29 },
-              { id: 3, name: 'Designer Leather Shoes', category: 'Footwear', price: '$349.99', originalPrice: '$449.99', rating: 5, reviews: 67, image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&h=400&fit=crop&crop=center', isNew: true, discount: 22 },
-              { id: 4, name: 'Cashmere Sweater', category: 'Knitwear', price: '$199.99', originalPrice: '$279.99', rating: 4, reviews: 156, image: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=300&h=400&fit=crop&crop=center', isNew: true, discount: 29 }
+              { 
+                id: 1, 
+                name: 'Premium Silk Dress', 
+                category: 'Women\'s Wear', 
+                price: '$299.99', 
+                originalPrice: '$399.99', 
+                rating: 5, 
+                reviews: 124, 
+                image: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=300&h=400&fit=crop&crop=center', 
+                discount: 25 
+              },
+              { 
+                id: 2, 
+                name: 'Luxury Wool Coat', 
+                category: 'Outerwear', 
+                price: '$499.99', 
+                originalPrice: '$699.99', 
+                rating: 5, 
+                reviews: 89, 
+                image: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=300&h=400&fit=crop&crop=center', 
+                discount: 29 
+              },
+              { 
+                id: 3, 
+                name: 'Designer Leather Shoes', 
+                category: 'Footwear', 
+                price: '$349.99', 
+                originalPrice: '$449.99', 
+                rating: 5, 
+                reviews: 67, 
+                image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&h=400&fit=crop&crop=center', 
+                discount: 22 
+              },
+              { 
+                id: 4, 
+                name: 'Cashmere Sweater', 
+                category: 'Knitwear', 
+                price: '$199.99', 
+                originalPrice: '$279.99', 
+                rating: 4, 
+                reviews: 156, 
+                image: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=300&h=400&fit=crop&crop=center', 
+                discount: 29 
+              }
             ].map((product) => (
               <div key={product.id} className="product-card">
                 <div className="product-image">
-                  <img src={product.image} alt={product.name} />
+                  <img src={product.image} alt={product.name} loading="lazy" />
                   <div className="product-overlay">
-                    <button className="quick-view-btn">
+                    <button className="quick-view-btn" aria-label={`Quick view ${product.name}`}>
                       <span className="btn-icon">👁️</span>
                       <span>QUICK VIEW</span>
                     </button>
                   </div>
                   <div className="product-badges">
-                    {product.isNew && <div className="product-badge new-badge">NEW</div>}
+                    <div className="product-badge new-badge">NEW</div>
                   </div>
                 </div>
                 <div className="product-info">
                   <div className="product-header">
                     <p className="product-category">{product.category}</p>
                     <div className="product-rating">
-                      <div className="stars">{'★'.repeat(product.rating)}{'☆'.repeat(5-product.rating)}</div>
+                      <div className="stars" aria-label={`${product.rating} stars`}>
+                        {'★'.repeat(product.rating)}{'☆'.repeat(5-product.rating)}
+                      </div>
                       <span className="rating-count">({product.reviews})</span>
                     </div>
                   </div>
@@ -138,7 +180,7 @@ const Home = () => {
                     <span className="original-price">{product.originalPrice}</span>
                   </div>
                   <div className="product-actions">
-                    <button className="product-action-btn view-details">
+                    <button className="product-action-btn view-details" aria-label={`View details for ${product.name}`}>
                       <span>View Details</span>
                       <span className="arrow">→</span>
                     </button>
@@ -176,9 +218,7 @@ const Home = () => {
               <h2>Our Story</h2>
               <p>
                 Born from a passion for timeless style and exceptional quality, Kivra represents 
-                the perfect fusion of contemporary design and classic elegance. Each piece in our 
-                collection is carefully crafted to empower your individual style journey and 
-                celebrate the art of sophisticated fashion.
+                the perfect fusion of contemporary design and classic elegance.
               </p>
               <div className="story-stats">
                 <div className="stat">
@@ -196,7 +236,11 @@ const Home = () => {
               </div>
             </div>
             <div className="story-image">
-              <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500&h=400&fit=crop&crop=center" alt="Our Story - Fashion boutique interior" />
+              <img 
+                src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500&h=400&fit=crop&crop=center" 
+                alt="Fashion boutique interior" 
+                loading="lazy"
+              />
             </div>
           </div>
         </div>
@@ -206,26 +250,18 @@ const Home = () => {
       <section className="features">
         <div className="container">
           <div className="features-grid">
-            <div className="feature-card">
-              <div className="feature-icon">🚚</div>
-              <h3>Free Shipping</h3>
-              <p>Complimentary shipping on orders over $200</p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">↩️</div>
-              <h3>Easy Returns</h3>
-              <p>30-day hassle-free return policy</p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">🛡️</div>
-              <h3>Secure Payment</h3>
-              <p>Your payment information is safe and secure</p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">⭐</div>
-              <h3>Premium Quality</h3>
-              <p>Carefully curated products from top designers</p>
-            </div>
+            {[
+              { icon: '🚚', title: 'Free Shipping', description: 'On orders over $200' },
+              { icon: '↩️', title: 'Easy Returns', description: '30-day return policy' },
+              { icon: '🛡️', title: 'Secure Payment', description: 'Safe & secure checkout' },
+              { icon: '⭐', title: 'Premium Quality', description: 'Curated top designers' }
+            ].map((feature, index) => (
+              <div key={index} className="feature-card">
+                <div className="feature-icon">{feature.icon}</div>
+                <h3>{feature.title}</h3>
+                <p>{feature.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

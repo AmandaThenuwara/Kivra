@@ -190,25 +190,47 @@ const Cart = () => {
         <div className="container">
           <div className="cart-header">
             <h1 className="cart-title">Shopping Cart</h1>
-            <p className="cart-count">0 items</p>
+            <div className="cart-count">
+              <span className="count-number">0</span>
+              <span className="count-text">items</span>
+            </div>
           </div>
           
           <div className="empty-cart">
-            <div className="empty-cart-icon">
-              <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z"></path>
-                <path d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z"></path>
-                <path d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6"></path>
-              </svg>
+            <div className="empty-cart-animation">
+              <div className="empty-cart-icon">
+                <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z"></path>
+                  <path d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z"></path>
+                  <path d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6"></path>
+                </svg>
+                <div className="floating-elements">
+                  <div className="floating-dot"></div>
+                  <div className="floating-dot"></div>
+                  <div className="floating-dot"></div>
+                </div>
+              </div>
             </div>
-            <h2 className="empty-cart-title">Your cart is empty</h2>
-            <p className="empty-cart-text">Looks like you haven't added any items to your cart yet.</p>
-            <button 
-              className="btn-primary"
-              onClick={() => navigate('/')}
-            >
-              Continue Shopping
-            </button>
+            <div className="empty-cart-content">
+              <h2 className="empty-cart-title">Your cart is empty</h2>
+              <p className="empty-cart-text">Discover amazing products and start building your perfect collection.</p>
+              <div className="empty-cart-actions">
+                <button 
+                  className="btn-primary-enhanced"
+                  onClick={() => navigate('/')}
+                >
+                  <span className="btn-text">Start Shopping</span>
+                  <span className="btn-icon">✨</span>
+                </button>
+                <button 
+                  className="btn-secondary-enhanced"
+                  onClick={() => navigate('/new-arrivals')}
+                >
+                  <span className="btn-text">View New Arrivals</span>
+                  <span className="btn-icon">🔥</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -219,27 +241,61 @@ const Cart = () => {
     <div className="cart-page">
       <div className="container">
         <div className="cart-header">
-          <h1 className="cart-title">
-            {checkoutStep === 'cart' && 'Shopping Cart'}
-            {checkoutStep === 'shipping' && 'Shipping Details'}
-            {checkoutStep === 'payment' && 'Payment'}
-          </h1>
-          <p className="cart-count">{cartCount} items</p>
+          <div className="cart-header-content">
+            <h1 className="cart-title">
+              {checkoutStep === 'cart' && 'Shopping Cart'}
+              {checkoutStep === 'shipping' && 'Shipping Details'}
+              {checkoutStep === 'payment' && 'Payment'}
+              <div className="title-decoration"></div>
+            </h1>
+            <div className="cart-count">
+              <span className="count-number">{cartCount}</span>
+              <span className="count-text">items</span>
+            </div>
+          </div>
+          
+          {/* Progress Bar */}
+          <div className="checkout-progress">
+            <div className="progress-track">
+              <div className={`progress-fill ${checkoutStep === 'cart' ? 'step-1' : checkoutStep === 'shipping' ? 'step-2' : 'step-3'}`}></div>
+            </div>
+          </div>
         </div>
 
         {/* Checkout Steps Indicator */}
         <div className="checkout-steps">
           <div className={`step ${checkoutStep === 'cart' ? 'active' : checkoutStep === 'shipping' || checkoutStep === 'payment' ? 'completed' : ''}`}>
-            <div className="step-number">1</div>
-            <div className="step-label">Cart</div>
+            <div className="step-circle">
+              <div className="step-number">
+                {checkoutStep === 'shipping' || checkoutStep === 'payment' ? '✓' : '1'}
+              </div>
+            </div>
+            <div className="step-info">
+              <div className="step-label">Cart</div>
+              <div className="step-description">Review items</div>
+            </div>
           </div>
+          <div className="step-connector"></div>
           <div className={`step ${checkoutStep === 'shipping' ? 'active' : checkoutStep === 'payment' ? 'completed' : ''}`}>
-            <div className="step-number">2</div>
-            <div className="step-label">Shipping</div>
+            <div className="step-circle">
+              <div className="step-number">
+                {checkoutStep === 'payment' ? '✓' : '2'}
+              </div>
+            </div>
+            <div className="step-info">
+              <div className="step-label">Shipping</div>
+              <div className="step-description">Delivery details</div>
+            </div>
           </div>
+          <div className="step-connector"></div>
           <div className={`step ${checkoutStep === 'payment' ? 'active' : ''}`}>
-            <div className="step-number">3</div>
-            <div className="step-label">Payment</div>
+            <div className="step-circle">
+              <div className="step-number">3</div>
+            </div>
+            <div className="step-info">
+              <div className="step-label">Payment</div>
+              <div className="step-description">Secure checkout</div>
+            </div>
           </div>
         </div>
 
@@ -248,142 +304,246 @@ const Cart = () => {
           <div className="cart-content">
           <div className="cart-items">
             <div className="cart-actions-top">
-              <button 
-                className="btn-secondary clear-cart"
-                onClick={handleClearCart}
-              >
-                Clear Cart
-              </button>
-              <button 
-                className="btn-outline continue-shopping"
-                onClick={handleContinueShopping}
-              >
-                {getContinueShoppingText()}
-              </button>
-            </div>
-
-            {cartItems.map((item) => (
-              <div key={item.cartId} className="cart-item">
-                <div className="item-image">
-                  <img src={item.image} alt={item.name} />
-                </div>
-                
-                <div className="item-details">
-                  <h3 className="item-name">{item.name}</h3>
-                  <p className="item-category">{item.category}</p>
-                  <p className="item-description">{item.description}</p>
-                  
-                  <div className="item-options">
-                    <span className="item-option">
-                      <strong>Size:</strong> {item.selectedSize}
-                    </span>
-                    <span className="item-option">
-                      <strong>Color:</strong> {item.selectedColor}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="item-price">
-                  <div className="price-display">
-                    <span className="current-price">LKR {item.price.toLocaleString()}</span>
-                    {item.originalPrice && (
-                      <span className="original-price">LKR {item.originalPrice.toLocaleString()}</span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="item-quantity">
-                  <label className="quantity-label">Quantity:</label>
-                  <div className="quantity-controls">
-                    <button 
-                      className="quantity-btn"
-                      onClick={() => handleQuantityChange(item.cartId, item.quantity - 1)}
-                    >
-                      −
-                    </button>
-                    <span className="quantity-display">{item.quantity}</span>
-                    <button 
-                      className="quantity-btn"
-                      onClick={() => handleQuantityChange(item.cartId, item.quantity + 1)}
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-
-                <div className="item-total">
-                  <span className="total-label">Total:</span>
-                  <span className="total-price">
-                    LKR {(item.price * item.quantity).toLocaleString()}
-                  </span>
-                </div>
-
-                <div className="item-actions">
-                  <button 
-                    className="remove-btn"
-                    onClick={() => handleRemoveItem(item.cartId)}
-                    title="Remove item"
-                  >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M3 6h18"></path>
-                      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                    </svg>
-                  </button>
+              <div className="cart-actions-left">
+                <div className="items-summary">
+                  <span className="items-count">{cartCount} items</span>
+                  <span className="cart-value">Total: LKR {cartTotal.toLocaleString()}</span>
                 </div>
               </div>
-            ))}
+              <div className="cart-actions-right">
+                <button 
+                  className="btn-outline continue-shopping"
+                  onClick={handleContinueShopping}
+                >
+                  <span className="btn-icon">🛍️</span>
+                  <span className="btn-text">{getContinueShoppingText()}</span>
+                </button>
+                <button 
+                  className="btn-danger clear-cart"
+                  onClick={handleClearCart}
+                >
+                  <span className="btn-icon">🗑️</span>
+                  <span className="btn-text">Clear Cart</span>
+                </button>
+              </div>
+            </div>
+
+            <div className="cart-items-grid">
+              {cartItems.map((item, index) => (
+                <div key={item.cartId} className="cart-item" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <div className="item-badge">
+                    <span className="item-number">#{index + 1}</span>
+                  </div>
+                  
+                  <div className="item-image">
+                    <img src={item.image} alt={item.name} />
+                    <div className="image-overlay">
+                      <div className="quick-actions">
+                        <button className="quick-action-btn" title="Quick view">
+                          <span>👁️</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="item-details">
+                    <div className="item-header">
+                      <h3 className="item-name">{item.name}</h3>
+                      <div className="item-rating">
+                        <div className="stars">★★★★★</div>
+                      </div>
+                    </div>
+                    <p className="item-category">{item.category}</p>
+                    <p className="item-description">{item.description}</p>
+                    
+                    <div className="item-options">
+                      <div className="item-option">
+                        <span className="option-label">Size:</span>
+                        <span className="option-value size-tag">{item.selectedSize}</span>
+                      </div>
+                      <div className="item-option">
+                        <span className="option-label">Color:</span>
+                        <span className="option-value color-tag">{item.selectedColor}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="item-price">
+                    <div className="price-display">
+                      <span className="current-price">LKR {item.price.toLocaleString()}</span>
+                      {item.originalPrice && (
+                        <span className="original-price">LKR {item.originalPrice.toLocaleString()}</span>
+                      )}
+                      {item.originalPrice && (
+                        <div className="discount-badge">
+                          {Math.round(((item.originalPrice - item.price) / item.originalPrice) * 100)}% OFF
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="item-quantity">
+                    <label className="quantity-label">Quantity</label>
+                    <div className="quantity-controls">
+                      <button 
+                        className="quantity-btn decrease"
+                        onClick={() => handleQuantityChange(item.cartId, item.quantity - 1)}
+                        disabled={item.quantity <= 1}
+                      >
+                        −
+                      </button>
+                      <span className="quantity-display">{item.quantity}</span>
+                      <button 
+                        className="quantity-btn increase"
+                        onClick={() => handleQuantityChange(item.cartId, item.quantity + 1)}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="item-total">
+                    <span className="total-label">Subtotal</span>
+                    <span className="total-price">
+                      LKR {(item.price * item.quantity).toLocaleString()}
+                    </span>
+                    <div className="savings">
+                      {item.originalPrice && (
+                        <span className="saved-amount">
+                          Save LKR {((item.originalPrice - item.price) * item.quantity).toLocaleString()}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="item-actions">
+                    <button 
+                      className="remove-btn"
+                      onClick={() => handleRemoveItem(item.cartId)}
+                      title="Remove item"
+                    >
+                      <span className="remove-icon">×</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="cart-summary">
             <div className="summary-card">
-              <h3 className="summary-title">Order Summary</h3>
-              
-              <div className="summary-line">
-                <span>Subtotal ({cartCount} items):</span>
-                <span>LKR {cartTotal.toLocaleString()}</span>
+              <div className="summary-header">
+                <h3 className="summary-title">Order Summary</h3>
+                <div className="summary-decoration"></div>
               </div>
               
-              <div className="summary-line">
-                <span>Shipping:</span>
-                <span>
-                  {shippingCost === 0 ? (
-                    <span className="free-shipping">FREE</span>
-                  ) : (
-                    `LKR ${shippingCost.toLocaleString()}`
-                  )}
-                </span>
+              <div className="summary-items-preview">
+                {cartItems.slice(0, 2).map((item) => (
+                  <div key={item.cartId} className="summary-item-preview">
+                    <img src={item.image} alt={item.name} className="preview-image" />
+                    <div className="preview-details">
+                      <p className="preview-name">{item.name}</p>
+                      <p className="preview-quantity">Qty: {item.quantity}</p>
+                    </div>
+                    <span className="preview-price">
+                      LKR {(item.price * item.quantity).toLocaleString()}
+                    </span>
+                  </div>
+                ))}
+                {cartItems.length > 2 && (
+                  <div className="summary-more-items">
+                    <span>+{cartItems.length - 2} more items</span>
+                  </div>
+                )}
               </div>
 
-              {cartTotal > 50000 && (
-                <div className="shipping-notice">
-                  <span className="free-shipping-badge">🎉 Free shipping applied!</span>
+              <div className="summary-calculations">
+                <div className="summary-line">
+                  <span>Subtotal ({cartCount} items):</span>
+                  <span>LKR {cartTotal.toLocaleString()}</span>
                 </div>
-              )}
-
-              {cartTotal < 50000 && (
-                <div className="shipping-notice">
-                  <span className="shipping-info">
-                    Add LKR {(50000 - cartTotal).toLocaleString()} more for free shipping
+                
+                <div className="summary-line shipping-line">
+                  <span>Shipping:</span>
+                  <span>
+                    {shippingCost === 0 ? (
+                      <span className="free-shipping">FREE</span>
+                    ) : (
+                      `LKR ${shippingCost.toLocaleString()}`
+                    )}
                   </span>
                 </div>
-              )}
-              
-              <div className="summary-line total-line">
-                <span>Total:</span>
-                <span className="final-total">LKR {finalTotal.toLocaleString()}</span>
+
+                {cartTotal > 50000 && (
+                  <div className="shipping-notice success">
+                    <div className="notice-icon">🎉</div>
+                    <span className="notice-text">Free shipping applied!</span>
+                  </div>
+                )}
+
+                {cartTotal < 50000 && (
+                  <div className="shipping-notice info">
+                    <div className="notice-icon">📦</div>
+                    <div className="notice-content">
+                      <span className="notice-text">
+                        Add LKR {(50000 - cartTotal).toLocaleString()} more for free shipping
+                      </span>
+                      <div className="progress-bar">
+                        <div 
+                          className="progress-fill" 
+                          style={{ width: `${(cartTotal / 50000) * 100}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
+                <div className="summary-line total-line">
+                  <span>Total:</span>
+                  <span className="final-total">LKR {finalTotal.toLocaleString()}</span>
+                </div>
               </div>
 
-              <button 
-                className="btn-primary checkout-button"
-                onClick={handleProceedToShipping}
-              >
-                Proceed to Shipping
-              </button>
+              <div className="checkout-actions">
+                <button 
+                  className="btn-primary-enhanced checkout-button"
+                  onClick={handleProceedToShipping}
+                >
+                  <span className="btn-text">Proceed to Shipping</span>
+                  <span className="btn-icon">→</span>
+                </button>
 
-              <div className="secure-payment">
-                <span className="secure-icon">🔒</span>
-                <span>Secure checkout</span>
+                <div className="trust-badges">
+                  <div className="trust-badge">
+                    <span className="badge-icon">🔒</span>
+                    <span className="badge-text">Secure Checkout</span>
+                  </div>
+                  <div className="trust-badge">
+                    <span className="badge-icon">💳</span>
+                    <span className="badge-text">Safe Payment</span>
+                  </div>
+                  <div className="trust-badge">
+                    <span className="badge-icon">�</span>
+                    <span className="badge-text">Fast Delivery</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Recommendations */}
+            <div className="recommendations-card">
+              <h4 className="recommendations-title">You might also like</h4>
+              <div className="recommendations-grid">
+                <div className="recommendation-item">
+                  <img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=100&h=120&fit=crop" alt="Recommendation" />
+                  <p className="rec-name">Silk Scarf</p>
+                  <p className="rec-price">LKR 15,999</p>
+                </div>
+                <div className="recommendation-item">
+                  <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=100&h=120&fit=crop" alt="Recommendation" />
+                  <p className="rec-name">Leather Belt</p>
+                  <p className="rec-price">LKR 8,999</p>
+                </div>
               </div>
             </div>
           </div>

@@ -890,32 +890,42 @@
 
 .hero-buttons {
   display: flex;
-  gap: 1.5rem;
+  gap: 2rem;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
+  margin-top: 2rem;
 }
 
 .btn-primary,
 .btn-secondary {
-  padding: 1.2rem 3rem;
+  padding: 1.3rem 3.5rem;
   font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 1rem;
+  font-weight: 700;
+  font-size: 1.1rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   border: none;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
   overflow: hidden;
   border-radius: 50px;
-  min-width: 200px;
+  min-width: 220px;
+  z-index: 10;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #D4AF37 0%, #F4E4BC 100%);
+  background: linear-gradient(135deg, #D4AF37 0%, #F4E4BC 50%, #D4AF37 100%);
   color: #000000;
-  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+  box-shadow: 
+    0 15px 35px rgba(212, 175, 55, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border: 2px solid transparent;
 }
 
 .btn-primary::before {
@@ -925,8 +935,8 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #F4E4BC 0%, #D4AF37 100%);
-  transition: left 0.4s ease;
+  background: linear-gradient(135deg, #F4E4BC 0%, #FFD700 50%, #F4E4BC 100%);
+  transition: left 0.5s ease;
   z-index: -1;
 }
 
@@ -935,15 +945,21 @@
 }
 
 .btn-primary:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(212, 175, 55, 0.6);
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 
+    0 25px 50px rgba(212, 175, 55, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  color: #000000;
 }
 
 .btn-secondary {
   background: transparent;
   color: #FFFFFF;
-  border: 2px solid rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(15px);
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .btn-secondary::before {
@@ -953,8 +969,8 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.1);
-  transition: left 0.4s ease;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(255, 255, 255, 0.1));
+  transition: left 0.5s ease;
   z-index: -1;
 }
 
@@ -963,9 +979,12 @@
 }
 
 .btn-secondary:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px) scale(1.05);
   border-color: #D4AF37;
-  box-shadow: 0 15px 35px rgba(255, 255, 255, 0.2);
+  color: #D4AF37;
+  box-shadow: 
+    0 25px 50px rgba(212, 175, 55, 0.3),
+    inset 0 1px 0 rgba(212, 175, 55, 0.2);
 }
 
 /* Categories Section */
@@ -1097,29 +1116,38 @@
 }
 
 .category-btn {
-  padding: 1rem 2.5rem;
-  background: transparent;
-  color: #FFFFFF;
+  padding: 1.2rem 3rem;
+  background: linear-gradient(135deg, #D4AF37, #F4E4BC);
+  color: #000000;
   border: 2px solid #D4AF37;
   border-radius: 50px;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 1rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  opacity: 0;
-  transform: translateY(20px);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  opacity: 0.9;
+  transform: translateY(10px);
+  z-index: 10;
+  position: relative;
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .category-card:hover .category-btn {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1.05);
 }
 
 .category-btn:hover {
-  background: #D4AF37;
+  background: linear-gradient(135deg, #F4E4BC, #FFD700);
   color: #000000;
-  transform: scale(1.05);
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 
+    0 20px 40px rgba(212, 175, 55, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 /* Enhanced Featured Products Section */
@@ -1451,18 +1479,19 @@
 .product-actions {
   display: flex;
   justify-content: center;
+  margin-top: 1rem;
 }
 
 .product-action-btn {
   width: 100%;
-  padding: 1.2rem 1.5rem;
-  border-radius: 12px;
-  font-weight: 600;
+  padding: 1.3rem 2rem;
+  border-radius: 15px;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   font-size: 1rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1470,12 +1499,16 @@
   position: relative;
   overflow: hidden;
   border: none;
+  z-index: 5;
+  box-shadow: 
+    0 8px 20px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .product-action-btn.view-details {
-  background: linear-gradient(135deg, #D4AF37, #F4E4BC);
+  background: linear-gradient(135deg, #D4AF37, #F4E4BC, #D4AF37);
   color: #000000;
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+  border: 2px solid #D4AF37;
 }
 
 .product-action-btn::before {
@@ -1485,8 +1518,8 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.5s;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.6s;
 }
 
 .product-action-btn:hover::before {
@@ -1494,9 +1527,12 @@
 }
 
 .product-action-btn.view-details:hover {
-  background: linear-gradient(135deg, #F4E4BC, #D4AF37);
-  transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(212, 175, 55, 0.3);
+  background: linear-gradient(135deg, #F4E4BC, #FFD700, #F4E4BC);
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 
+    0 15px 35px rgba(212, 175, 55, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border-color: #FFD700;
 }
 
 .arrow {
@@ -1724,44 +1760,78 @@
 
 .newsletter-form {
   display: flex;
-  max-width: 500px;
+  max-width: 550px;
   margin: 0 auto;
   gap: 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.8rem;
   border-radius: 50px;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .newsletter-form input {
   flex: 1;
-  padding: 1rem 1.5rem;
+  padding: 1.2rem 2rem;
   border: none;
   background: transparent;
   color: #FFFFFF;
-  font-size: 1rem;
+  font-size: 1.1rem;
+  font-weight: 500;
   outline: none;
+  letter-spacing: 0.5px;
 }
 
 .newsletter-form input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
 }
 
 .subscribe-btn {
-  padding: 1rem 2rem;
-  background: linear-gradient(135deg, #D4AF37, #F4E4BC);
+  padding: 1.2rem 2.5rem;
+  background: linear-gradient(135deg, #D4AF37, #F4E4BC, #D4AF37);
   color: #000000;
   border: none;
-  border-radius: 50px;
-  font-weight: 600;
+  border-radius: 45px;
+  font-weight: 700;
+  font-size: 1rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+  z-index: 10;
+  box-shadow: 
+    0 10px 25px rgba(212, 175, 55, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.subscribe-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #F4E4BC, #FFD700, #F4E4BC);
+  transition: left 0.5s ease;
+  z-index: -1;
+}
+
+.subscribe-btn:hover::before {
+  left: 0;
 }
 
 .subscribe-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 
+    0 20px 40px rgba(212, 175, 55, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 /* Brand Story Section */
@@ -2000,16 +2070,56 @@
   }
 }
 
+/* Additional responsive breakpoint for better tablet experience */
+@media (max-width: 1024px) {
+  .hero-buttons {
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+  
+  .btn-primary,
+  .btn-secondary {
+    padding: 1.2rem 3rem;
+    font-size: 1rem;
+    min-width: 200px;
+  }
+  
+  .category-btn {
+    padding: 1rem 2.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .newsletter-form {
+    max-width: 450px;
+    gap: 0.8rem;
+  }
+  
+  .subscribe-btn {
+    padding: 1.1rem 2rem;
+    font-size: 0.9rem;
+  }
+  
+  .product-action-btn {
+    padding: 1.2rem 1.8rem;
+    font-size: 0.95rem;
+  }
+}
+
 @media (max-width: 768px) {
   .hero-buttons {
     flex-direction: column;
     align-items: center;
+    gap: 1.2rem;
+    margin-top: 2rem;
   }
   
   .btn-primary,
   .btn-secondary {
     width: 100%;
-    max-width: 300px;
+    max-width: 320px;
+    padding: 1.3rem 2rem;
+    font-size: 1rem;
+    min-width: auto;
   }
   
   .categories-grid {
@@ -2018,25 +2128,46 @@
   }
   
   .category-card {
-    height: 300px;
+    height: 320px;
+  }
+  
+  .category-btn {
+    padding: 1.1rem 2.5rem;
+    font-size: 0.9rem;
+    opacity: 1;
+    transform: translateY(0);
   }
   
   .products-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+  
+  .product-action-btn {
+    padding: 1.2rem 1.5rem;
+    font-size: 0.9rem;
   }
   
   .newsletter-form {
     flex-direction: column;
-    max-width: 300px;
-    background: none;
-    padding: 0;
+    max-width: 350px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    gap: 1rem;
   }
   
   .newsletter-form input {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 50px;
     backdrop-filter: blur(10px);
+    padding: 1.2rem 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .subscribe-btn {
+    width: 100%;
+    padding: 1.3rem 2rem;
+    border-radius: 50px;
   }
   
   .story-content {
@@ -2084,12 +2215,52 @@
     padding: 0 1rem;
   }
   
+  .hero-buttons {
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    max-width: 280px;
+    padding: 1.2rem 1.5rem;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+  }
+  
   .category-overlay {
     padding: 2rem 1rem;
   }
   
+  .category-btn {
+    padding: 1rem 2rem;
+    font-size: 0.85rem;
+  }
+  
   .product-info {
     padding: 1.5rem;
+  }
+  
+  .product-action-btn {
+    padding: 1.1rem 1.3rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.8px;
+  }
+  
+  .newsletter-form {
+    max-width: 300px;
+    padding: 0.8rem;
+  }
+  
+  .newsletter-form input {
+    padding: 1.1rem 1.3rem;
+    font-size: 0.9rem;
+  }
+  
+  .subscribe-btn {
+    padding: 1.2rem 1.8rem;
+    font-size: 0.9rem;
   }
 
   .features-grid {
