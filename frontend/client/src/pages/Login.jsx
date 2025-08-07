@@ -277,7 +277,7 @@ const Login = () => {
 
         {/* Sign Up Link */}
         <div className="text-center">
-          <p className="text-gold-light">
+          <div className="text-gold-light">
             Don't have an account?{' '}
             <Link
               to="/register"
@@ -288,7 +288,7 @@ const Login = () => {
                 <div className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-primary-gold group-hover:w-full transition-all duration-300"></div>
               </span>
             </Link>
-          </p>
+          </div>
         </div>
       </div>
     </div>

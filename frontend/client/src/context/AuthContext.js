@@ -28,15 +28,35 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(false);
   }, []);
 
-  const login = (userData) => {
+  const login = (email, password) => {
+    // For demo purposes, we'll create a user profile
     const userProfile = {
       id: Date.now(), // Simple ID generation
-      email: userData.email,
-      firstName: userData.firstName || userData.email.split('@')[0],
-      lastName: userData.lastName || '',
+      email: email,
+      firstName: email.split('@')[0],
+      lastName: '',
       joinDate: new Date().toISOString(),
       preferences: {
-        newsletter: userData.subscribeNewsletter || false,
+        newsletter: false,
+        notifications: true
+      }
+    };
+    
+    setUser(userProfile);
+    localStorage.setItem('kivra_user', JSON.stringify(userProfile));
+    return userProfile;
+  };
+
+  const register = (email, password, firstName, lastName) => {
+    // For demo purposes, we'll create a user profile
+    const userProfile = {
+      id: Date.now(), // Simple ID generation
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
+      joinDate: new Date().toISOString(),
+      preferences: {
+        newsletter: false,
         notifications: true
       }
     };
@@ -61,6 +81,7 @@ export const AuthProvider = ({ children }) => {
     user,
     isLoading,
     login,
+    register,
     logout,
     updateUser,
     isAuthenticated: !!user

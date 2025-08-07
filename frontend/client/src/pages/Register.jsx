@@ -397,7 +397,7 @@ const Register = () => {
 
         {/* Sign In Link */}
         <div className="text-center">
-          <p className="text-gold-light">
+          <div className="text-gold-light">
             Already have an account?{' '}
             <Link
               to="/login"
@@ -408,7 +408,7 @@ const Register = () => {
                 <div className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-primary-gold group-hover:w-full transition-all duration-300"></div>
               </span>
             </Link>
-          </p>
+          </div>
         </div>
       </div>
     </div>
