@@ -74,7 +74,7 @@ const Home = () => {
               <h1 className="text-6xl md:text-7xl lg:text-8xl font-black text-primary-white leading-none tracking-tight mb-8">
                 <span className="block text-primary-white">DISCOVER YOUR</span>
                 <span className="block text-primary-gold">PERFECT STYLE</span>
-              </h1>
+            </h1>
             </div>
 
             {/* Call-to-Action Buttons - Clear and Prominent */}
@@ -183,25 +183,25 @@ const Home = () => {
                   />
                   <div className={`absolute inset-0 bg-gradient-to-br ${category.gradient} group-hover:opacity-80 transition-opacity duration-500`}></div>
                   <div className="absolute inset-0 bg-gradient-to-t from-primary-black via-primary-black/50 to-transparent"></div>
-                </div>
+              </div>
                 
                 <div className="absolute bottom-0 left-0 right-0 p-10 text-primary-white">
                   <div className="mb-4">
                     <span className="inline-block bg-primary-gold/20 text-primary-gold px-3 py-1 rounded-full text-xs font-medium">
                       COLLECTION
                     </span>
-                  </div>
+            </div>
                   <h3 className="text-3xl font-bold mb-3">{category.title}</h3>
                   <p className="text-gold-light mb-4">{category.subtitle}</p>
                   <p className="text-smoke text-sm mb-6">{category.description}</p>
-                  <button 
+                <button 
                     className="group/btn relative overflow-hidden bg-primary-gold text-primary-black px-8 py-4 rounded-xl font-bold hover:bg-gold-dark transition-all duration-300 hover:scale-105"
                     onClick={() => handleCategoryNavigation(category.category)}
-                  >
+                >
                     <span className="relative z-10">Explore Collection</span>
                     <div className="absolute inset-0 bg-gradient-to-r from-gold-light to-primary-gold transform scale-x-0 group-hover/btn:scale-x-100 transition-transform duration-300 origin-left"></div>
-                  </button>
-                </div>
+                </button>
+              </div>
               </div>
             ))}
           </div>
@@ -315,7 +315,7 @@ const Home = () => {
                   </div>
                   <button className="w-full bg-gradient-to-r from-primary-gold to-gold-dark text-primary-black py-3 rounded-xl font-bold hover:from-gold-dark hover:to-primary-gold transition-all duration-300 transform hover:scale-105">
                     View Details →
-                  </button>
+                    </button>
                 </div>
               </div>
             ))}
@@ -339,12 +339,12 @@ const Home = () => {
             Subscribe to get exclusive offers, early access to new collections, and insider updates on the latest fashion trends
           </p>
           <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-            <input 
-              type="email" 
-              placeholder="Enter your email address" 
+              <input 
+                type="email" 
+                placeholder="Enter your email address" 
               className="flex-1 px-6 py-4 rounded-xl border-0 focus:outline-none focus:ring-2 focus:ring-primary-gold bg-primary-white/10 text-primary-white placeholder-gold-light"
-              aria-label="Email address for newsletter"
-            />
+                aria-label="Email address for newsletter"
+              />
             <button className="bg-primary-gold text-primary-black px-8 py-4 rounded-xl font-bold hover:bg-gold-dark transition-all duration-300 transform hover:scale-105">
               Subscribe
             </button>

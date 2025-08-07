@@ -52,7 +52,7 @@ const Footer = () => {
         <div className="py-16">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
             
-            {/* Brand Section */}
+          {/* Brand Section */}
             <div className="lg:col-span-2">
               <div className="mb-6">
                 <Link to="/" className="inline-flex items-center space-x-2 group">
@@ -74,14 +74,14 @@ const Footer = () => {
               <div className="mb-6">
                 <h4 className="text-primary-white font-semibold mb-3">Stay Updated</h4>
                 <div className="flex">
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
+                <input 
+                  type="email" 
+                  placeholder="Enter your email"
                     className="flex-1 px-4 py-2 bg-white/10 border border-white/20 rounded-l-lg text-primary-white placeholder-gold-light focus:outline-none focus:ring-2 focus:ring-primary-gold focus:border-transparent"
                   />
                   <button className="px-4 py-2 bg-primary-gold text-primary-black rounded-r-lg hover:bg-gold-dark transition-colors duration-300 font-medium">
                     Subscribe
-                  </button>
+                </button>
                 </div>
               </div>
 
@@ -101,7 +101,7 @@ const Footer = () => {
                       <span className="text-lg">{social.icon}</span>
                     </a>
                   ))}
-                </div>
+              </div>
               </div>
             </div>
 
@@ -202,7 +202,7 @@ const Footer = () => {
               <div className="flex items-center space-x-2">
                 <span className="text-primary-gold">🚚</span>
                 <span className="text-smoke text-sm">Free Shipping</span>
-              </div>
+            </div>
               <div className="flex items-center space-x-2">
                 <span className="text-primary-gold">↩️</span>
                 <span className="text-smoke text-sm">Easy Returns</span>
