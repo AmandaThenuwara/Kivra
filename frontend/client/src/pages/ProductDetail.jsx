@@ -1,712 +1,422 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import SizeChart from '../components/SizeChart';
-import './Products.css';
 
 const ProductDetail = () => {
-  const { productId, category } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { isAuthenticated } = useAuth();
+  
+  const [product, setProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState('');
-  const [selectedColor, setSelectedColor] = useState('');
-  const [sizeChartOpen, setSizeChartOpen] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+  const [selectedImage, setSelectedImage] = useState(0);
+  const [showSizeChart, setShowSizeChart] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
 
-  // Combined product data from all categories
-  const allProducts = [
-    // Men's products
-    {
-      id: 1,
-      name: "Classic Oxford Shirt",
-      price: 14900,
-      originalPrice: 19900,
-      image: "https://images.unsplash.com/photo-1564257577386-5d7c5d4e3e4e?w=400&h=500&fit=crop",
-      category: "Shirts",
-      sale: true,
-      new: false,
-      description: "Premium cotton oxford shirt with modern fit",
-      sizes: ["S", "M", "L", "XL"],
-      colors: ["White", "Blue", "Light Blue"],
-      pageCategory: "men"
-    },
-    {
-      id: 2,
-      name: "Premium Wool Suit",
-      price: 89900,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop",
-      category: "Suits",
-      sale: false,
-      new: true,
-      description: "Handcrafted wool suit with Italian tailoring",
-      sizes: ["38", "40", "42", "44", "46"],
-      colors: ["Navy", "Charcoal", "Black"],
-      pageCategory: "men"
-    },
-    {
-      id: 3,
-      name: "Leather Dress Shoes",
-      price: 29900,
-      originalPrice: 39900,
-      image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=500&fit=crop",
-      category: "Shoes",
-      sale: true,
-      new: false,
-      description: "Genuine leather oxford shoes with leather sole",
-      sizes: ["7", "8", "9", "10", "11", "12"],
-      colors: ["Black", "Brown", "Cognac"],
-      pageCategory: "men"
-    },
-    {
-      id: 4,
-      name: "Cashmere Sweater",
-      price: 24900,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?w=400&h=500&fit=crop",
-      category: "Knitwear",
-      sale: false,
-      new: true,
-      description: "100% cashmere crew neck sweater",
-      sizes: ["S", "M", "L", "XL"],
-      colors: ["Navy", "Grey", "Camel"],
-      pageCategory: "men"
-    },
-    {
-      id: 5,
-      name: "Tailored Blazer",
-      price: 39900,
-      originalPrice: 49900,
-      image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&h=500&fit=crop",
-      category: "Blazers",
-      sale: true,
-      new: false,
-      description: "Slim fit blazer with peak lapels",
-      sizes: ["38", "40", "42", "44"],
-      colors: ["Navy", "Black", "Grey"],
-      pageCategory: "men"
-    },
-    {
-      id: 6,
-      name: "Designer Jeans",
-      price: 18900,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=500&fit=crop",
-      category: "Denim",
-      sale: false,
-      new: false,
-      description: "Premium denim with contemporary fit",
-      sizes: ["30", "32", "34", "36", "38"],
-      colors: ["Dark Blue", "Black", "Light Blue"],
-      pageCategory: "men"
-    },
-    {
-      id: 7,
-      name: "Luxury Watch",
-      price: 129900,
-      originalPrice: 159900,
-      image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=400&h=500&fit=crop",
-      category: "Accessories",
-      sale: true,
-      new: false,
-      description: "Swiss movement luxury timepiece",
-      sizes: ["One Size"],
-      colors: ["Silver", "Gold", "Black"],
-      pageCategory: "men"
-    },
-    {
-      id: 8,
-      name: "Silk Tie Collection",
-      price: 8900,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=500&fit=crop",
-      category: "Accessories",
-      sale: false,
-      new: true,
-      description: "Hand-crafted silk ties with premium patterns",
-      sizes: ["One Size"],
-      colors: ["Navy", "Burgundy", "Gold"],
-      pageCategory: "men"
-    },
-    // Women's products
-    {
-      id: 9,
-      name: "Elegant Evening Dress",
-      price: 34900,
-      originalPrice: 44900,
-      image: "https://images.unsplash.com/photo-1566479179817-c7707b8c01fe?w=400&h=500&fit=crop",
-      category: "Dresses",
-      sale: true,
-      new: false,
-      description: "Sophisticated evening dress with flowing silhouette",
-      sizes: ["XS", "S", "M", "L", "XL"],
-      colors: ["Black", "Navy", "Burgundy"],
-      pageCategory: "women"
-    },
-    {
-      id: 10,
-      name: "Silk Blouse",
-      price: 18900,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1594633313593-bab3825d0caf?w=400&h=500&fit=crop",
-      category: "Blouses",
-      sale: false,
-      new: true,
-      description: "Pure silk blouse with French seams",
-      sizes: ["XS", "S", "M", "L"],
-      colors: ["White", "Cream", "Blush"],
-      pageCategory: "women"
-    },
-    {
-      id: 11,
-      name: "Designer Handbag",
-      price: 59900,
-      originalPrice: 79900,
-      image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=500&fit=crop",
-      category: "Bags",
-      sale: true,
-      new: false,
-      description: "Luxury leather handbag with gold hardware",
-      sizes: ["One Size"],
-      colors: ["Black", "Tan", "Red"],
-      pageCategory: "women"
-    },
-    {
-      id: 12,
-      name: "Cashmere Coat",
-      price: 79900,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=400&h=500&fit=crop",
-      category: "Outerwear",
-      sale: false,
-      new: true,
-      description: "Double-breasted cashmere coat with belt",
-      sizes: ["XS", "S", "M", "L", "XL"],
-      colors: ["Camel", "Black", "Navy"],
-      pageCategory: "women"
-    },
-    {
-      id: 13,
-      name: "High-Heel Pumps",
-      price: 24900,
-      originalPrice: 32900,
-      image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400&h=500&fit=crop",
-      category: "Shoes",
-      sale: true,
-      new: false,
-      description: "Classic pointed-toe pumps with 4-inch heel",
-      sizes: ["5", "6", "7", "8", "9", "10"],
-      colors: ["Black", "Nude", "Red"],
-      pageCategory: "women"
-    },
-    {
-      id: 14,
-      name: "Pearl Jewelry Set",
-      price: 39900,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=500&fit=crop",
-      category: "Jewelry",
-      sale: false,
-      new: false,
-      description: "Cultured pearl necklace and earring set",
-      sizes: ["One Size"],
-      colors: ["White", "Cream", "Silver"],
-      pageCategory: "women"
-    },
-    {
-      id: 15,
-      name: "Luxury Scarf",
-      price: 12900,
-      originalPrice: 16900,
-      image: "https://images.unsplash.com/photo-1544441892-794166f1e3be?w=400&h=500&fit=crop",
-      category: "Accessories",
-      sale: true,
-      new: false,
-      description: "Pure silk scarf with hand-rolled edges",
-      sizes: ["One Size"],
-      colors: ["Floral", "Geometric", "Abstract"],
-      pageCategory: "women"
-    },
-    {
-      id: 16,
-      name: "Designer Sunglasses",
-      price: 29900,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400&h=500&fit=crop",
-      category: "Accessories",
-      sale: false,
-      new: true,
-      description: "Oversized sunglasses with UV protection",
-      sizes: ["One Size"],
-      colors: ["Black", "Tortoise", "Gold"],
-      pageCategory: "women"
-    },
-    // New Arrivals products
-    {
-      id: 17,
-      name: "Limited Edition Jacket",
-      price: 599,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=400&h=500&fit=crop",
-      category: "Outerwear",
-      sale: false,
-      new: true,
-      description: "Exclusive limited edition bomber jacket",
-      sizes: ["S", "M", "L", "XL"],
-      colors: ["Black", "Olive", "Navy"],
-      arrivalDate: "2025-07-28",
-      limited: true,
-      pageCategory: "new-arrivals"
-    },
-    {
-      id: 18,
-      name: "Artisan Leather Boots",
-      price: 449,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1608256246200-53e8b47b8fd9?w=400&h=500&fit=crop",
-      category: "Footwear",
-      sale: false,
-      new: true,
-      description: "Handcrafted leather boots with premium finish",
-      sizes: ["7", "8", "9", "10", "11", "12"],
-      colors: ["Brown", "Black", "Tan"],
-      arrivalDate: "2025-07-27",
-      limited: false,
-      pageCategory: "new-arrivals"
-    },
-    {
-      id: 19,
-      name: "Signature Fragrance",
-      price: 189,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=500&fit=crop",
-      category: "Fragrance",
-      sale: false,
-      new: true,
-      description: "Exclusive signature scent with notes of bergamot and sandalwood",
-      sizes: ["50ml", "100ml"],
-      colors: ["Original"],
-      arrivalDate: "2025-07-26",
-      limited: true,
-      pageCategory: "new-arrivals"
-    },
-    {
-      id: 20,
-      name: "Premium Denim Collection",
-      price: 299,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=500&fit=crop",
-      category: "Denim",
-      sale: false,
-      new: true,
-      description: "Japanese selvedge denim with vintage wash",
-      sizes: ["28", "30", "32", "34", "36"],
-      colors: ["Indigo", "Black", "Raw"],
-      arrivalDate: "2025-07-25",
-      limited: false,
-      pageCategory: "new-arrivals"
-    },
-    {
-      id: 21,
-      name: "Exclusive Designer Dress",
-      price: 899,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1566479179817-c7707b8c01fe?w=400&h=500&fit=crop",
-      category: "Dresses",
-      sale: false,
-      new: true,
-      description: "Couture dress from our exclusive designer collaboration",
-      sizes: ["XS", "S", "M", "L"],
-      colors: ["Midnight", "Emerald", "Ruby"],
-      arrivalDate: "2025-07-24",
-      limited: true,
-      pageCategory: "new-arrivals"
-    },
-    {
-      id: 22,
-      name: "Luxury Sport Watch",
-      price: 1899,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=400&h=500&fit=crop",
-      category: "Watches",
-      sale: false,
-      new: true,
-      description: "Swiss-made sport watch with titanium case",
-      sizes: ["One Size"],
-      colors: ["Titanium", "Black", "Blue"],
-      arrivalDate: "2025-07-23",
-      limited: true,
-      pageCategory: "new-arrivals"
-    },
-    {
-      id: 23,
-      name: "Designer Sneakers",
-      price: 349,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1560072810-1cdd64903750?w=400&h=500&fit=crop",
-      category: "Sneakers",
-      sale: false,
-      new: true,
-      description: "Limited edition designer sneakers with premium materials",
-      sizes: ["7", "8", "9", "10", "11", "12"],
-      colors: ["White", "Black", "Grey"],
-      arrivalDate: "2025-07-22",
-      limited: false,
-      pageCategory: "new-arrivals"
-    },
-    {
-      id: 24,
-      name: "Artisan Jewelry Collection",
-      price: 59900,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=500&fit=crop",
-      category: "Jewelry",
-      sale: false,
-      new: true,
-      description: "Handcrafted jewelry pieces by renowned artisans",
-      sizes: ["One Size"],
-      colors: ["Gold", "Silver", "Rose Gold"],
-      arrivalDate: "2025-07-21",
-      limited: true,
-      pageCategory: "new-arrivals"
-    },
-    // Accessories products
-    {
-      id: 25,
-      name: "Leather Belt Collection",
-      price: 15900,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=500&fit=crop",
-      category: "Belts",
-      sale: false,
-      new: true,
-      description: "Genuine leather belts with premium buckles",
-      sizes: ["32", "34", "36", "38", "40"],
-      colors: ["Black", "Brown", "Cognac"],
-      pageCategory: "accessories"
-    },
-    {
-      id: 26,
-      name: "Premium Wallet",
-      price: 18900,
-      originalPrice: 24900,
-      image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=500&fit=crop",
-      category: "Wallets",
-      sale: true,
-      new: false,
-      description: "Handcrafted leather wallet with RFID protection",
-      sizes: ["One Size"],
-      colors: ["Black", "Brown", "Navy"],
-      pageCategory: "accessories"
-    },
-    {
-      id: 27,
-      name: "Cufflinks Set",
-      price: 12900,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=500&fit=crop",
-      category: "Jewelry",
-      sale: false,
-      new: true,
-      description: "Sterling silver cufflinks with engraved design",
-      sizes: ["One Size"],
-      colors: ["Silver", "Gold", "Rose Gold"],
-      pageCategory: "accessories"
-    },
-    {
-      id: 28,
-      name: "Designer Hat Collection",
-      price: 9900,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1544441892-794166f1e3be?w=400&h=500&fit=crop",
-      category: "Hats",
-      sale: false,
-      new: false,
-      description: "Premium felt hats with classic styling",
-      sizes: ["S", "M", "L"],
-      colors: ["Black", "Navy", "Grey"],
-      pageCategory: "accessories"
-    },
-    {
-      id: 29,
-      name: "Phone Case Luxury",
-      price: 7900,
-      originalPrice: 9900,
-      image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=500&fit=crop",
-      category: "Tech Accessories",
-      sale: true,
-      new: true,
-      description: "Luxury leather phone case with card slots",
-      sizes: ["iPhone", "Samsung"],
-      colors: ["Black", "Brown", "Red"],
-      pageCategory: "accessories"
-    },
-    {
-      id: 30,
-      name: "Keychain Collection",
-      price: 4900,
-      originalPrice: null,
-      image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=500&fit=crop",
-      category: "Keychains",
-      sale: false,
-      new: false,
-      description: "Premium metal keychains with elegant design",
-      sizes: ["One Size"],
-      colors: ["Silver", "Gold", "Black"],
-      pageCategory: "accessories"
+  // Mock product data
+  const mockProduct = {
+    id: id,
+    name: "Premium Silk Dress",
+    price: 299.99,
+    originalPrice: 399.99,
+    description: "Elegant silk dress crafted with the finest materials. Perfect for special occasions and evening events. Features a sophisticated design with intricate detailing and comfortable fit.",
+    images: [
+      "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&h=800&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=600&h=800&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&h=800&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&h=800&fit=crop&crop=center"
+    ],
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+    colors: ['Black', 'Navy', 'Burgundy'],
+    category: 'Dresses',
+    brand: 'Kivra Luxury',
+    material: '100% Silk',
+    care: 'Dry clean only',
+    features: [
+      'Premium silk fabric',
+      'Elegant design',
+      'Perfect fit',
+      'Handcrafted details',
+      'Sustainable production'
+    ],
+    inStock: true,
+    rating: 4.8,
+    reviews: 127
+  };
+
+  useEffect(() => {
+    console.log('ProductDetail: Loading product with ID:', id);
+    // Simulate API call
+    setTimeout(() => {
+      console.log('ProductDetail: Setting product data');
+      setProduct(mockProduct);
+      setIsLoading(false);
+    }, 1000);
+  }, [id]);
+
+  const handleAddToCart = () => {
+    if (!selectedSize) {
+      alert('Please select a size');
+      return;
     }
-  ];
+    
+    setIsAddingToCart(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      addToCart({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.images[0],
+        category: product.category,
+        description: product.description
+      }, selectedSize);
+      setIsAddingToCart(false);
+      alert('Added to cart successfully!');
+    }, 1000);
+  };
 
-  const product = allProducts.find(p => p.id === parseInt(productId));
+  const handleBuyNow = () => {
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+    
+    handleAddToCart();
+    setTimeout(() => {
+      navigate('/cart');
+    }, 1500);
+  };
+
+  if (isLoading) {
+    console.log('ProductDetail: Showing loading state');
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary-black via-charcoal to-primary-black py-20 relative overflow-hidden">
+        {/* Enhanced Background Elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-br from-primary-gold/20 to-burgundy/20 rounded-full blur-3xl animate-float"></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-br from-burgundy/20 to-primary-gold/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+        </div>
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Enhanced Loading Skeleton */}
+            <div className="space-y-6">
+              <div className="relative">
+                <div className="bg-white/10 rounded-2xl h-96 animate-pulse"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-primary-gold/5 to-burgundy/5 rounded-2xl animate-pulse-slow"></div>
+              </div>
+              <div className="flex space-x-4">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="relative">
+                    <div className="bg-white/10 rounded-xl h-20 w-20 animate-pulse"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary-gold/5 to-burgundy/5 rounded-xl animate-pulse-slow" style={{ animationDelay: `${i * 0.2}s` }}></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="space-y-8">
+              <div className="bg-white/10 rounded-xl h-10 w-3/4 animate-pulse"></div>
+              <div className="bg-white/10 rounded-xl h-8 w-1/2 animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+              <div className="bg-white/10 rounded-xl h-40 w-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+              <div className="bg-white/10 rounded-xl h-16 w-full animate-pulse" style={{ animationDelay: '0.6s' }}></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!product) {
+    console.log('ProductDetail: Product not found');
     return (
-      <div className="product-detail-page">
-        <div className="product-not-found">
-          <h2>Product Not Found</h2>
-          <button onClick={() => navigate(-1)} className="back-btn">
-            Go Back
+      <div className="min-h-screen bg-primary-black py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-3xl font-bold text-primary-white mb-4">Product Not Found</h1>
+          <p className="text-gold-light mb-8">The product you're looking for doesn't exist.</p>
+          <button
+            onClick={() => navigate('/')}
+            className="bg-gradient-to-r from-primary-gold to-gold-dark text-primary-black px-8 py-3 rounded-lg font-semibold hover:from-gold-dark hover:to-primary-gold transition-all duration-300 transform hover:scale-105"
+          >
+            Back to Home
           </button>
         </div>
       </div>
     );
   }
 
-  const handleAddToCart = () => {
-    if (!selectedSize || !selectedColor) {
-      alert('Please select both size and color before adding to cart');
-      return;
-    }
-
-    const cartItem = addToCart(product, selectedSize, selectedColor);
-    alert('Product added to cart successfully!');
-    
-    // Navigate to cart after adding item
-    navigate('/cart');
-  };
-
-  // Helper function to determine gender based on category
-  const getGender = () => {
-    if (category === 'men') return 'men';
-    if (category === 'women') return 'women';
-    return 'general';
-  };
-
-  // Function to get similar products
-  const getSimilarProducts = () => {
-    if (!product) return [];
-    
-    // Create a scoring system for similarity
-    const scoredProducts = allProducts
-      .filter(p => p.id !== product.id) // Exclude current product
-      .map(p => {
-        let score = 0;
-        
-        // Same category gets highest priority
-        if (p.category === product.category) score += 10;
-        
-        // Same page category gets medium priority
-        if (p.pageCategory === product.pageCategory) score += 7;
-        
-        // Similar price range gets bonus points
-        const priceDiff = Math.abs(p.price - product.price);
-        const priceRange = product.price * 0.5; // 50% price range
-        if (priceDiff <= priceRange) score += 5;
-        
-        // Sale items prioritized if current item is on sale
-        if (product.sale && p.sale) score += 3;
-        
-        // New items prioritized if current item is new
-        if (product.new && p.new) score += 3;
-        
-        // Limited items get special priority
-        if (p.limited) score += 2;
-        
-        return { ...p, similarityScore: score };
-      })
-      .sort((a, b) => b.similarityScore - a.similarityScore); // Sort by score descending
-    
-    // Get products with similarity score > 0 first
-    let similarProducts = scoredProducts.filter(p => p.similarityScore > 0);
-    
-    // If we don't have enough similar products, add some random ones from the same page category
-    if (similarProducts.length < 4) {
-      const additionalProducts = scoredProducts
-        .filter(p => p.similarityScore === 0 && p.pageCategory === product.pageCategory)
-        .slice(0, 4 - similarProducts.length);
-      similarProducts = [...similarProducts, ...additionalProducts];
-    }
-    
-    // Return top 4 most similar products
-    return similarProducts.slice(0, 4);
-  };
-
-  const similarProducts = getSimilarProducts();
-
+  console.log('ProductDetail: Rendering main content with product:', product);
   return (
-    <div className="product-detail-page">
-      <div className="product-detail-container">
-        <button onClick={() => navigate(-1)} className="back-btn">
-          ← Back to {category === 'new-arrivals' ? 'New Arrivals' : category.charAt(0).toUpperCase() + category.slice(1)}
-        </button>
+    <div className="min-h-screen bg-gradient-to-br from-primary-black via-charcoal to-primary-black py-20 relative overflow-hidden">
+      {/* Enhanced Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-br from-primary-gold/20 to-burgundy/20 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-br from-burgundy/20 to-primary-gold/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-br from-gold-light/10 to-primary-gold/10 rounded-full blur-2xl animate-pulse-slow"></div>
+      </div>
+      
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Breadcrumb */}
+        <nav className="mb-8">
+          <ol className="flex items-center space-x-2 text-sm text-gold-light">
+            <li><button onClick={() => navigate('/')} className="hover:text-primary-gold transition-colors duration-200">Home</button></li>
+            <li>/</li>
+            <li><button onClick={() => navigate(`/${product.category.toLowerCase()}`)} className="hover:text-primary-gold transition-colors duration-200">{product.category}</button></li>
+            <li>/</li>
+            <li className="text-primary-white">{product.name}</li>
+          </ol>
+        </nav>
 
-        <div className="product-detail-content">
-          <div className="product-detail-image">
-            <img src={product.image} alt={product.name} />
-            <div className="product-badges">
-              {product.sale && <span className="badge sale-badge">SALE</span>}
-              {product.new && <span className="badge new-badge">NEW</span>}
-              {product.limited && <span className="badge limited-badge">LIMITED</span>}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Product Images */}
+          <div className="space-y-6">
+            {/* Main Image */}
+            <div className="relative group">
+              <div className="bg-white/5 rounded-2xl overflow-hidden border border-white/10">
+                <img
+                  src={product.images[selectedImage]}
+                  alt={product.name}
+                  className="w-full h-[600px] object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+              
+              {/* Image Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
+              {/* Quick View Button */}
+              <button className="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-primary-white hover:bg-primary-gold hover:text-primary-black transition-all duration-300 opacity-0 group-hover:opacity-100">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Thumbnail Images */}
+            <div className="flex space-x-4">
+              {product.images.map((image, index) => (
+                <button
+                  key={index}
+                  onClick={() => setSelectedImage(index)}
+                  className={`relative w-20 h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
+                    selectedImage === index 
+                      ? 'border-primary-gold' 
+                      : 'border-white/20 hover:border-white/40'
+                  }`}
+                >
+                  <img
+                    src={image}
+                    alt={`${product.name} ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                  {selectedImage === index && (
+                    <div className="absolute inset-0 bg-primary-gold/20 flex items-center justify-center">
+                      <div className="w-2 h-2 bg-primary-gold rounded-full"></div>
+                    </div>
+                  )}
+        </button>
+              ))}
             </div>
           </div>
 
-          <div className="product-detail-info">
-            <div className="product-category">{product.category}</div>
-            <h1 className="product-title">{product.name}</h1>
-            <p className="product-description">{product.description}</p>
-
-            <div className="product-price">
-              <span className="current-price">LKR {product.price}</span>
+          {/* Product Info */}
+          <div className="space-y-8">
+            {/* Header */}
+            <div>
+              <div className="flex items-center space-x-4 mb-4">
+                <span className="text-sm text-gold-light font-medium">{product.brand}</span>
+                <div className="flex items-center space-x-1">
+                  <div className="flex">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <svg
+                        key={star}
+                        className={`w-4 h-4 ${
+                          star <= Math.floor(product.rating) 
+                            ? 'text-primary-gold' 
+                            : 'text-white/20'
+                        }`}
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <span className="text-sm text-gold-light">({product.reviews} reviews)</span>
+                </div>
+              </div>
+              
+              <h1 className="text-4xl font-bold text-primary-white mb-4">{product.name}</h1>
+              
+              <div className="flex items-center space-x-4 mb-6">
+                <span className="text-3xl font-bold text-primary-gold">${product.price}</span>
+                {product.originalPrice && (
+                  <span className="text-xl text-gold-light line-through">${product.originalPrice}</span>
+                )}
               {product.originalPrice && (
-                <span className="original-price">LKR {product.originalPrice}</span>
+                  <span className="bg-burgundy text-primary-white px-2 py-1 rounded text-sm font-medium">
+                    {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+                  </span>
               )}
+              </div>
             </div>
 
-            <div className="product-options-detail">
-              <div className="size-selection">
-                <h3>Select Size:</h3>
-                <div className="size-grid">
-                  {product.sizes.map(size => (
-                    <button
-                      key={size}
-                      className={`size-btn ${selectedSize === size ? 'selected' : ''}`}
-                      onClick={() => setSelectedSize(size)}
-                    >
-                      {size}
-                    </button>
-                  ))}
+            {/* Description */}
+            <div>
+              <h3 className="text-lg font-semibold text-primary-white mb-3">Description</h3>
+              <p className="text-gold-light leading-relaxed">{product.description}</p>
                 </div>
+
+            {/* Size Selection */}
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-primary-white">Select Size</h3>
                 <button 
-                  className="size-guide-btn"
-                  onClick={() => setSizeChartOpen(true)}
+                  onClick={() => setShowSizeChart(true)}
+                  className="text-primary-gold hover:text-gold-light text-sm underline transition-colors duration-200"
                 >
                   Size Guide
                 </button>
               </div>
 
-              <div className="color-selection">
-                <h3>Select Color:</h3>
-                <div className="color-grid">
-                  {product.colors.map(color => (
+              <div className="grid grid-cols-5 gap-3">
+                {product.sizes.map((size) => (
                     <button
-                      key={color}
-                      className={`color-btn ${selectedColor === color ? 'selected' : ''}`}
-                      onClick={() => setSelectedColor(color)}
-                    >
-                      {color}
+                    key={size}
+                    onClick={() => setSelectedSize(size)}
+                    className={`py-3 px-4 rounded-lg border-2 font-medium transition-all duration-300 ${
+                      selectedSize === size
+                        ? 'border-primary-gold bg-primary-gold/20 text-primary-gold'
+                        : 'border-white/20 text-primary-white hover:border-white/40 hover:bg-white/10'
+                    }`}
+                  >
+                    {size}
                     </button>
                   ))}
-                </div>
               </div>
             </div>
 
-            <div className="selection-summary">
-              {selectedSize && <span>Size: {selectedSize}</span>}
-              {selectedColor && <span>Color: {selectedColor}</span>}
-            </div>
-
+            {/* Quantity */}
+            <div>
+              <h3 className="text-lg font-semibold text-primary-white mb-4">Quantity</h3>
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center border border-white/20 rounded-lg">
             <button 
-              className="add-to-cart-btn-detail"
-              onClick={handleAddToCart}
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="w-12 h-12 flex items-center justify-center text-primary-white hover:bg-white/10 transition-colors duration-200"
             >
-              Add to Cart
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                    </svg>
             </button>
-          </div>
-        </div>
-
-        {/* Similar Products Section */}
-        {similarProducts.length > 0 ? (
-          <div className="similar-products-section">
-            <h2 className="similar-products-title">You Might Also Like</h2>
-            <div className="similar-products-grid">
-              {similarProducts.map(similarProduct => (
-                <div key={similarProduct.id} className="similar-product-card">
-                  <div className="similar-product-image-container">
-                    <img 
-                      src={similarProduct.image} 
-                      alt={similarProduct.name} 
-                      className="similar-product-image"
-                    />
-                    <div className="similar-product-badges">
-                      {similarProduct.sale && <span className="badge sale-badge">SALE</span>}
-                      {similarProduct.new && <span className="badge new-badge">NEW</span>}
-                      {similarProduct.limited && <span className="badge limited-badge">LIMITED</span>}
-                    </div>
-                    <div className="similar-product-overlay">
+                  <span className="w-16 text-center text-primary-white font-semibold">{quantity}</span>
                       <button 
-                        className="similar-quick-view-btn"
-                        onClick={() => navigate(`/product/${similarProduct.pageCategory}/${similarProduct.id}`)}
+                    onClick={() => setQuantity(quantity + 1)}
+                    className="w-12 h-12 flex items-center justify-center text-primary-white hover:bg-white/10 transition-colors duration-200"
                       >
-                        View Details
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                    </svg>
                       </button>
-                    </div>
                   </div>
                   
-                  <div className="similar-product-info">
-                    <div className="similar-product-category">{similarProduct.category}</div>
-                    <h3 className="similar-product-name">{similarProduct.name}</h3>
-                    
-                    {/* Show similarity reason */}
-                    {similarProduct.category === product.category && (
-                      <div className="similarity-reason">Same Category</div>
-                    )}
-                    
-                    <div className="similar-product-price">
-                      <span className="current-price">LKR {similarProduct.price}</span>
-                      {similarProduct.originalPrice && (
-                        <span className="original-price">LKR {similarProduct.originalPrice}</span>
+                <div className="text-gold-light text-sm">
+                  {product.inStock ? (
+                    <span className="flex items-center">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                      In Stock
+                    </span>
+                  ) : (
+                    <span className="flex items-center">
+                      <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
+                      Out of Stock
+                    </span>
                       )}
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
+
+            {/* Action Buttons */}
+            <div className="space-y-4">
+              <button
+                onClick={handleAddToCart}
+                disabled={!product.inStock || isAddingToCart}
+                className="w-full bg-gradient-to-r from-primary-gold to-gold-dark text-primary-black py-4 rounded-lg font-semibold hover:from-gold-dark hover:to-primary-gold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              >
+                {isAddingToCart ? (
+                  <div className="flex items-center justify-center space-x-2">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-black"></div>
+                    <span>Adding to Cart...</span>
           </div>
         ) : (
-          <div className="similar-products-section">
-            <h2 className="similar-products-title">Explore More Products</h2>
-            <div className="no-similar-products">
-              <p>Check out our other collections for more amazing products!</p>
-              <div className="explore-buttons">
-                <button 
-                  className="explore-btn"
-                  onClick={() => navigate('/men')}
-                >
-                  Men's Collection
+                  'Add to Cart'
+                )}
                 </button>
+              
                 <button 
-                  className="explore-btn"
-                  onClick={() => navigate('/women')}
+                onClick={handleBuyNow}
+                disabled={!product.inStock}
+                className="w-full border-2 border-primary-gold text-primary-gold py-4 rounded-lg font-semibold hover:bg-primary-gold hover:text-primary-black transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                 >
-                  Women's Collection
+                Buy Now
                 </button>
-                <button 
-                  className="explore-btn"
-                  onClick={() => navigate('/new-arrivals')}
-                >
-                  New Arrivals
-                </button>
+            </div>
+
+            {/* Product Features */}
+            <div>
+              <h3 className="text-lg font-semibold text-primary-white mb-4">Features</h3>
+              <ul className="space-y-2">
+                {product.features.map((feature, index) => (
+                  <li key={index} className="flex items-center text-gold-light">
+                    <svg className="w-4 h-4 text-primary-gold mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Product Details */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h4 className="font-semibold text-primary-white mb-2">Material</h4>
+                <p className="text-gold-light">{product.material}</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-primary-white mb-2">Care Instructions</h4>
+                <p className="text-gold-light">{product.care}</p>
               </div>
             </div>
           </div>
-        )}
+        </div>
       </div>
       
-      <SizeChart 
-        isOpen={sizeChartOpen}
-        onClose={() => setSizeChartOpen(false)}
-        category={product.category}
-        gender={getGender()}
-      />
+      {/* Size Chart Modal */}
+      {showSizeChart && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-primary-black border border-white/20 rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-primary-white">Size Guide</h2>
+              <button
+                onClick={() => setShowSizeChart(false)}
+                className="w-8 h-8 bg-white/10 hover:bg-white/20 text-primary-white rounded-lg flex items-center justify-center transition-colors duration-200"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <SizeChart />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

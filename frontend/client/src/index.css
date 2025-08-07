@@ -1,13 +1,77 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+  }
+
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+      monospace;
+  }
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@layer components {
+  .btn-primary {
+    @apply bg-primary-gold hover:bg-gold-dark text-primary-black font-medium py-2 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gold-dark focus:ring-offset-2 shadow-lg hover:shadow-xl;
+  }
+  
+  .btn-secondary {
+    @apply bg-burgundy hover:bg-burgundy-dark text-primary-white font-medium py-2 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-burgundy-dark focus:ring-offset-2 shadow-lg hover:shadow-xl;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-primary-gold text-primary-gold hover:bg-primary-gold hover:text-primary-black font-medium py-2 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gold-dark focus:ring-offset-2;
+  }
+  
+  .card {
+    @apply bg-pearl rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-shadow;
+  }
+  
+  .card-luxury {
+    @apply bg-gradient-to-br from-gold-light to-pearl rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gold-light;
+  }
+  
+  .input-field {
+    @apply w-full px-3 py-2 border border-shadow rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-gold focus:border-transparent transition-all duration-200 bg-pearl;
+  }
+  
+  .nav-link {
+    @apply text-charcoal hover:text-primary-gold font-medium transition-colors duration-200 relative;
+  }
+  
+  .nav-link::after {
+    @apply content-[''] absolute bottom-0 left-0 w-0 h-0.5 bg-primary-gold transition-all duration-200;
+  }
+  
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-gold to-burgundy bg-clip-text text-transparent;
+  }
+  
+  .luxury-gradient {
+    @apply bg-gradient-to-br from-primary-gold via-gold-light to-pearl;
+  }
+  
+  .burgundy-gradient {
+    @apply bg-gradient-to-br from-burgundy via-burgundy-light to-burgundy-dark;
+  }
 }

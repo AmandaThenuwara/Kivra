@@ -1,182 +1,227 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import './Footer.css';
 
 const Footer = () => {
-  const [email, setEmail] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [message, setMessage] = useState('');
+  const currentYear = new Date().getFullYear();
 
-  const handleNewsletterSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!email) {
-      setMessage('Please enter your email address');
-      return;
-    }
-
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setMessage('Please enter a valid email address');
-      return;
-    }
-
-    setIsSubmitting(true);
-    setMessage('');
-
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setMessage('Successfully subscribed to our newsletter!');
-      setEmail('');
-    } catch (error) {
-      setMessage('Something went wrong. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-      setTimeout(() => setMessage(''), 3000);
-    }
+  const footerLinks = {
+    shop: [
+      { name: 'Men\'s Collection', path: '/men' },
+      { name: 'Women\'s Collection', path: '/women' },
+      { name: 'Accessories', path: '/accessories' },
+      { name: 'New Arrivals', path: '/new-arrivals' }
+    ],
+    support: [
+      { name: 'Contact Us', path: '/contact' },
+      { name: 'Shipping Info', path: '/shipping' },
+      { name: 'Returns', path: '/returns' },
+      { name: 'Size Guide', path: '/size-guide' }
+    ],
+    company: [
+      { name: 'About Us', path: '/about' },
+      { name: 'Careers', path: '/careers' },
+      { name: 'Press', path: '/press' },
+      { name: 'Sustainability', path: '/sustainability' }
+    ],
+    legal: [
+      { name: 'Privacy Policy', path: '/privacy' },
+      { name: 'Terms of Service', path: '/terms' },
+      { name: 'Cookie Policy', path: '/cookies' },
+      { name: 'Accessibility', path: '/accessibility' }
+    ]
   };
 
+  const socialLinks = [
+    { name: 'Instagram', icon: '📷', url: 'https://instagram.com' },
+    { name: 'Facebook', icon: '📘', url: 'https://facebook.com' },
+    { name: 'Twitter', icon: '🐦', url: 'https://twitter.com' },
+    { name: 'Pinterest', icon: '📌', url: 'https://pinterest.com' },
+    { name: 'YouTube', icon: '📺', url: 'https://youtube.com' }
+  ];
+
   return (
-    <footer className="footer">
-      <div className="footer-container">
+    <footer className="bg-gradient-to-br from-charcoal via-primary-black to-charcoal relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-0 w-64 h-64 bg-primary-gold/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-burgundy/5 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Footer Content */}
-        <div className="footer-content">
-          {/* Brand Section */}
-          <div className="footer-section brand-section">
-            <h3 className="footer-logo">KIVRA</h3>
-            <p className="footer-tagline">Luxury Fashion Redefined</p>
-            <p className="footer-description">
-              Discover timeless elegance and contemporary style with our curated collection 
-              of premium fashion pieces designed for the modern lifestyle.
-            </p>
-            <div className="social-links">
-              <a href="#" className="social-link" aria-label="Facebook">
-                <i className="fab fa-facebook-f"></i>
-              </a>
-              <a href="#" className="social-link" aria-label="Instagram">
-                <i className="fab fa-instagram"></i>
-              </a>
-              
-              
-            </div>
-          </div>
-
-          {/* Quick Links */}
-          <div className="footer-section">
-            <h4 className="footer-title">Shop</h4>
-            <ul className="footer-links">
-              <li><Link to="/men">Men's Collection</Link></li>
-              <li><Link to="/women">Women's Collection</Link></li>
-              <li><Link to="/new-arrivals">New Arrivals</Link></li>
-              <li><Link to="/accessories">Accessories</Link></li>
-              <li><a href="#">Sale Items</a></li>
-              <li><a href="#">Gift Cards</a></li>
-            </ul>
-          </div>
-
-          {/* Customer Service */}
-          <div className="footer-section">
-            <h4 className="footer-title">Customer Care</h4>
-            <ul className="footer-links">
-              <li><a href="#">Contact Us</a></li>
-              <li><a href="#">Size Guide</a></li>
-              <li><a href="#">Shipping & Returns</a></li>
-              <li><a href="#">Order Tracking</a></li>
-              <li><a href="#">FAQ</a></li>
-              <li><a href="#">Live Chat</a></li>
-            </ul>
-          </div>
-
-          {/* Company Info */}
-          <div className="footer-section">
-            <h4 className="footer-title">Company</h4>
-            <ul className="footer-links">
-              <li><a href="#">About Kivra</a></li>
-              <li><a href="#">Careers</a></li>
-              <li><a href="#">Press</a></li>
-              <li><a href="#">Sustainability</a></li>
-              <li><a href="#">Investor Relations</a></li>
-              <li><a href="#">Store Locator</a></li>
-            </ul>
-          </div>
-
-          {/* Newsletter */}
-          <div className="footer-section newsletter-section">
-            <h4 className="footer-title">Stay Connected</h4>
-            <p className="newsletter-text">
-              Subscribe to our newsletter for exclusive offers, style tips, and early access to new collections.
-            </p>
-            <form className="newsletter-form" onSubmit={handleNewsletterSubmit}>
-              <div className="newsletter-input-group">
-                <input 
-                  type="email" 
-                  placeholder="Enter your email"
-                  className="newsletter-input"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  disabled={isSubmitting}
-                  required
-                />
-                <button 
-                  type="submit" 
-                  className="newsletter-btn"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? 'Subscribing...' : 'Subscribe'}
-                </button>
+        <div className="py-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
+            
+            {/* Brand Section */}
+            <div className="lg:col-span-2">
+              <div className="mb-6">
+                <Link to="/" className="inline-flex items-center space-x-2 group">
+                  <div className="relative">
+                    <span className="text-3xl font-bold bg-gradient-to-r from-primary-gold via-gold-light to-burgundy bg-clip-text text-transparent animate-shimmer">
+                      KIVRA
+                    </span>
+                    <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary-gold to-burgundy group-hover:w-full transition-all duration-300"></div>
+                  </div>
+                </Link>
+                <p className="text-sm text-gold-light mt-2">Luxury Fashion</p>
               </div>
-              {message && (
-                <div className={`newsletter-message ${message.includes('Successfully') ? 'success' : 'error'}`}>
-                  {message}
+              
+              <p className="text-smoke text-sm leading-relaxed mb-6 max-w-md">
+                Discover the epitome of sophistication and style. Every piece tells a story of exceptional craftsmanship and timeless elegance.
+              </p>
+              
+              {/* Newsletter Signup */}
+              <div className="mb-6">
+                <h4 className="text-primary-white font-semibold mb-3">Stay Updated</h4>
+                <div className="flex">
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    className="flex-1 px-4 py-2 bg-white/10 border border-white/20 rounded-l-lg text-primary-white placeholder-gold-light focus:outline-none focus:ring-2 focus:ring-primary-gold focus:border-transparent"
+                  />
+                  <button className="px-4 py-2 bg-primary-gold text-primary-black rounded-r-lg hover:bg-gold-dark transition-colors duration-300 font-medium">
+                    Subscribe
+                  </button>
                 </div>
-              )}
-            </form>
-            <div className="contact-info">
-              <div className="contact-item">
-                <i className="fas fa-phone"></i>
-                <span>+1 (555) 123-4567</span>
               </div>
-              <div className="contact-item">
-                <i className="fas fa-envelope"></i>
-                <span>hello@kivra.com</span>
+
+              {/* Social Links */}
+              <div>
+                <h4 className="text-primary-white font-semibold mb-3">Follow Us</h4>
+                <div className="flex space-x-3">
+                  {socialLinks.map((social, index) => (
+                    <a
+                      key={social.name}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 bg-white/10 hover:bg-primary-gold/20 border border-white/20 rounded-lg flex items-center justify-center text-primary-white hover:text-primary-gold transition-all duration-300 transform hover:scale-110 hover:rotate-3"
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                    >
+                      <span className="text-lg">{social.icon}</span>
+                    </a>
+                  ))}
+                </div>
               </div>
-              <div className="contact-item">
-                <i className="fas fa-map-marker-alt"></i>
-                <span>123 Fashion Ave, Style City, SC 12345</span>
-              </div>
+            </div>
+
+            {/* Shop Links */}
+            <div>
+              <h4 className="text-primary-white font-semibold mb-4">Shop</h4>
+              <ul className="space-y-2">
+                {footerLinks.shop.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      to={link.path}
+                      className="text-smoke hover:text-primary-gold transition-colors duration-300 text-sm group"
+                    >
+                      <span className="relative">
+                        {link.name}
+                        <div className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-primary-gold group-hover:w-full transition-all duration-300"></div>
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Support Links */}
+            <div>
+              <h4 className="text-primary-white font-semibold mb-4">Support</h4>
+              <ul className="space-y-2">
+                {footerLinks.support.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      to={link.path}
+                      className="text-smoke hover:text-primary-gold transition-colors duration-300 text-sm group"
+                    >
+                      <span className="relative">
+                        {link.name}
+                        <div className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-primary-gold group-hover:w-full transition-all duration-300"></div>
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Company Links */}
+            <div>
+              <h4 className="text-primary-white font-semibold mb-4">Company</h4>
+              <ul className="space-y-2">
+                {footerLinks.company.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      to={link.path}
+                      className="text-smoke hover:text-primary-gold transition-colors duration-300 text-sm group"
+                    >
+                      <span className="relative">
+                        {link.name}
+                        <div className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-primary-gold group-hover:w-full transition-all duration-300"></div>
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Legal Links */}
+            <div>
+              <h4 className="text-primary-white font-semibold mb-4">Legal</h4>
+              <ul className="space-y-2">
+                {footerLinks.legal.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      to={link.path}
+                      className="text-smoke hover:text-primary-gold transition-colors duration-300 text-sm group"
+                    >
+                      <span className="relative">
+                        {link.name}
+                        <div className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-primary-gold group-hover:w-full transition-all duration-300"></div>
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
 
-       
-
-        {/* Footer Bottom */}
-        <div className="footer-bottom">
-          <div className="footer-bottom-content">
-            <div className="footer-bottom-left">
-              <p>&copy; 2025 Kivra. All rights reserved.</p>
-              <div className="footer-legal">
-                <a href="#">Privacy Policy</a>
-                <span className="separator">|</span>
-                <a href="#">Terms of Service</a>
-                <span className="separator">|</span>
-                <a href="#">Cookie Policy</a>
-                <span className="separator">|</span>
-                <a href="#">Accessibility</a>
-              </div>
+        {/* Bottom Bar */}
+        <div className="border-t border-white/10 py-6">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div className="text-smoke text-sm">
+              © {currentYear} Kivra Luxury Fashion. All rights reserved.
             </div>
-            <div className="footer-bottom-right">
-              <div className="certifications">
-                <span className="cert-badge">SSL Secured</span>
-                <span className="cert-badge">Eco Friendly</span>
-                <span className="cert-badge">Ethically Made</span>
+            
+            <div className="flex items-center space-x-6 text-sm">
+              <div className="flex items-center space-x-2">
+                <span className="text-primary-gold">🔒</span>
+                <span className="text-smoke text-sm">Secure Payment</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-primary-gold">🚚</span>
+                <span className="text-smoke text-sm">Free Shipping</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-primary-gold">↩️</span>
+                <span className="text-smoke text-sm">Easy Returns</span>
               </div>
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Floating Elements */}
+      <div className="absolute top-1/4 right-10 animate-float">
+        <div className="w-8 h-8 bg-primary-gold/20 rounded-full blur-sm"></div>
+      </div>
+      <div className="absolute bottom-1/4 left-10 animate-float" style={{ animationDelay: '2s' }}>
+        <div className="w-6 h-6 bg-burgundy/20 rounded-full blur-sm"></div>
       </div>
     </footer>
   );
 };
 
 export default Footer;
+
