@@ -6,9 +6,17 @@ const Payment = ({ onPaymentComplete }) => {
     number: '',
     name: '',
     expiry: '',
-    cvv: ''
+    cvv: '',
+    type: ''
   });
   const [isProcessing, setIsProcessing] = useState(false);
+
+  const cardTypes = [
+    { value: 'visa', label: 'Visa', icon: 'VISA' },
+    { value: 'mastercard', label: 'Mastercard', icon: 'MC' },
+    { value: 'amex', label: 'American Express', icon: 'AMEX' },
+    { value: 'discover', label: 'Discover', icon: 'DISC' }
+  ];
 
   const handleCardChange = (e) => {
     const { name, value } = e.target;
@@ -17,6 +25,21 @@ const Payment = ({ onPaymentComplete }) => {
     // Format card number with spaces
     if (name === 'number') {
       formattedValue = value.replace(/\s/g, '').replace(/(\d{4})/g, '$1 ').trim();
+      
+      // Auto-detect card type based on number
+      const cleanNumber = formattedValue.replace(/\s/g, '');
+      let detectedType = '';
+      if (cleanNumber.startsWith('4')) detectedType = 'visa';
+      else if (cleanNumber.startsWith('5') || cleanNumber.startsWith('2')) detectedType = 'mastercard';
+      else if (cleanNumber.startsWith('3')) detectedType = 'amex';
+      else if (cleanNumber.startsWith('6')) detectedType = 'discover';
+      
+      setCardData({
+        ...cardData,
+        [name]: formattedValue,
+        type: detectedType
+      });
+      return;
     }
 
     // Format expiry date
@@ -44,8 +67,9 @@ const Payment = ({ onPaymentComplete }) => {
   const getCardType = (number) => {
     const cleanNumber = number.replace(/\s/g, '');
     if (cleanNumber.startsWith('4')) return 'visa';
-    if (cleanNumber.startsWith('5')) return 'mastercard';
+    if (cleanNumber.startsWith('5') || cleanNumber.startsWith('2')) return 'mastercard';
     if (cleanNumber.startsWith('3')) return 'amex';
+    if (cleanNumber.startsWith('6')) return 'discover';
     return 'generic';
   };
 
@@ -120,6 +144,26 @@ const Payment = ({ onPaymentComplete }) => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gold-light mb-2">
+              Card Type
+            </label>
+            <select
+              name="type"
+              value={cardData.type}
+              onChange={handleCardChange}
+              className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-primary-white focus:outline-none focus:border-primary-gold transition-colors duration-200"
+              required
+            >
+              <option value="" className="bg-charcoal text-primary-white">Select Card Type</option>
+              {cardTypes.map((type) => (
+                <option key={type.value} value={type.value} className="bg-charcoal text-primary-white">
+                  {type.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gold-light mb-2">
               Card Number
             </label>
             <div className="relative">
@@ -136,13 +180,16 @@ const Payment = ({ onPaymentComplete }) => {
               <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                 <div className="w-8 h-5 bg-primary-gold/20 rounded flex items-center justify-center">
                   <span className="text-xs font-bold text-primary-gold">
-                    {getCardType(cardData.number) === 'visa' ? 'VISA' : 
-                     getCardType(cardData.number) === 'mastercard' ? 'MC' :
-                     getCardType(cardData.number) === 'amex' ? 'AMEX' : '••'}
+                    {cardData.type ? cardTypes.find(type => type.value === cardData.type)?.icon : '••'}
                   </span>
                 </div>
               </div>
             </div>
+            {cardData.number && cardData.type && getCardType(cardData.number) !== cardData.type && (
+              <p className="text-red-500 text-sm mt-1">
+                Card number doesn't match selected card type
+              </p>
+            )}
           </div>
 
           <div>
@@ -186,16 +233,19 @@ const Payment = ({ onPaymentComplete }) => {
                 value={cardData.cvv}
                 onChange={handleCardChange}
                 className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-primary-white placeholder-gold-light/50 focus:outline-none focus:border-primary-gold transition-colors duration-200"
-                placeholder="123"
-                maxLength="4"
+                placeholder={cardData.type === 'amex' ? '1234' : '123'}
+                maxLength={cardData.type === 'amex' ? '4' : '3'}
                 required
               />
+              <p className="text-xs text-gold-light/70 mt-1">
+                {cardData.type === 'amex' ? '4 digits on front of card' : '3 digits on back of card'}
+              </p>
             </div>
           </div>
 
           <button
             type="submit"
-            disabled={isProcessing}
+            disabled={isProcessing || (cardData.number && cardData.type && getCardType(cardData.number) !== cardData.type)}
             className="w-full bg-gradient-to-r from-primary-gold to-gold-dark text-primary-black py-4 rounded-lg font-semibold hover:from-gold-dark hover:to-primary-gold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-lg"
           >
             {isProcessing ? (
